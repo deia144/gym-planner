@@ -1,4 +1,11 @@
 const CACHE = "gym-planner-v1";
+const CACHE_NAME = 'gym-planner-v1';
+
+const FILES_TO_CACHE = [
+  './',
+  './index.html',
+  './manifest.webmanifest'
+];
 const APP = ["./", "./index.html", "./manifest.webmanifest"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(c => c.addAll(APP)).then(() => self.skipWaiting()));
