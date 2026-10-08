@@ -1,0 +1,11 @@
+{
+  "name": "جدول النادي",
+  "short_name": "جدول النادي",
+  "description": "جدول تمارين النادي وحفظ التقدم على الجهاز",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f1f3f0",
+  "theme_color": "#0f8f7e",
+  "lang": "ar",
+  "dir": "rtl"
+}

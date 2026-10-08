@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>جدول النادي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f3f0;--panel:#fff;--ink:#17201d;--mute:#5f6b66;--line:#d9dfdb;--acc:#0f8f7e;--accink:#fff;--rest:#e8ebe8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101715;--panel:#18211e;--ink:#e9f0ed;--mute:#9fb0a9;--line:#2a3833;--acc:#2fc2ad;--accink:#06231e;--rest:#1d2723}}
+:root[data-theme="dark"]{--bg:#101715;--panel:#18211e;--ink:#e9f0ed;--mute:#9fb0a9;--line:#2a3833;--acc:#2fc2ad;--accink:#06231e;--rest:#1d2723}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Tajawal',Tahoma,system-ui,sans-serif;line-height:1.6}
+main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
+h1{font-size:clamp(1.8rem,5vw,2.6rem);margin:0 0 4px;font-weight:800;line-height:1.2}
+.sub{color:var(--mute);margin:0 0 18px}
+.top{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.bar{height:10px;border-radius:5px;background:var(--rest);overflow:hidden;margin:8px 0 14px}
+.bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .3s}
+.stat{display:flex;justify-content:space-between;font-weight:700}
+.stat span:last-child{color:var(--mute);font-weight:500}
+.pre{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pre small{color:var(--mute);width:100%}
+button{font:inherit;cursor:pointer}
+.chip{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.chip:hover{border-color:var(--acc)}
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.day{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.day.rest{background:var(--rest)}
+.day.today{border:2px solid var(--acc)}
+.hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.hd h3{margin:0;font-size:1.2rem;font-weight:800;flex:1}
+.badge{background:var(--acc);color:var(--accink);font-size:.75rem;font-weight:700;padding:1px 8px;border-radius:999px}
+select,input[type=time],input[type=text]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);min-width:0}
+.meta{display:flex;gap:8px;margin-bottom:10px}
+.meta select{flex:1}
+.ex{display:grid;grid-template-columns:24px 1fr 44px 52px 52px 26px 24px;gap:6px;align-items:center;margin-bottom:6px}
+.ex input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
+.ex input[type=text]{width:100%;padding:6px 4px;text-align:center}
+.ex input.n{text-align:right;padding:6px 8px}
+.ex.done input.n{text-decoration:line-through;color:var(--mute)}
+.ex .x{border:0;background:none;color:var(--mute);font-size:1.2rem;line-height:1}
+.lbl{display:grid;grid-template-columns:24px 1fr 44px 52px 52px 26px 24px;gap:6px;color:var(--mute);font-size:.75rem;text-align:center;margin-bottom:2px}
+.lbl span:nth-child(2){text-align:right}
+.ft{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.ft button{flex:1;padding:7px;border-radius:6px;border:1px dashed var(--line);background:none;color:var(--ink)}
+.ft button:hover{border-color:var(--acc)}
+.v{color:var(--acc);text-decoration:none;text-align:center;font-size:1rem}
+.tp{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.tp a{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-decoration:none}
+.tp a:hover{border-color:var(--acc)}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);padding:14px;width:min(94vw,420px);font-family:inherit}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+dialog video{width:100%;max-height:70vh;border-radius:8px;background:#000;display:block}
+dialog .dh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+dialog .dh b{font-size:1.05rem}
+.qr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.qr label{margin:0}
+.qr select{flex:1}
+dialog .dc{border:1px solid var(--line);background:none;color:var(--ink);border-radius:6px;padding:4px 12px}
+dialog a{display:inline-block;margin-top:10px;color:var(--acc)}
+.gr{margin-top:12px}
+.gh{font-weight:700;margin-bottom:6px}
+.gh span{color:var(--mute);font-weight:400;font-size:.85rem}
+.f{display:block;margin:0;font-weight:400}
+.f small{display:none}
+html{-webkit-text-size-adjust:100%}
+button,select,input,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media (max-width:640px){
+ body{font-size:16px}
+ main{padding:16px 12px 40px}
+ .days{grid-template-columns:1fr;gap:12px}
+ .day{padding:12px}
+ .hd h3{font-size:1.3rem}
+ select,input[type=time],input[type=text],input[type=number]{font-size:16px;min-height:44px;padding:8px 10px}
+ .chip,.reset{min-height:44px;padding:8px 14px}
+ .ft button{min-height:44px;font-size:1rem}
+ .meta{gap:8px}
+ .meta select{min-width:0}
+ .lbl{display:none}
+ .ex{grid-template-columns:44px 1fr 1fr 44px 44px;grid-template-areas:"c n n p x" ". s r w w";gap:8px 6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+ .ex:last-of-type{border-bottom:0}
+ .ex>:nth-child(1){grid-area:c;justify-self:center;width:26px;height:26px}
+ .ex>:nth-child(2){grid-area:n}
+ .ex>:nth-child(3){grid-area:s}
+ .ex>:nth-child(4){grid-area:r}
+ .ex>:nth-child(5){grid-area:w}
+ .ex>:nth-child(6){grid-area:p;display:flex;align-items:center;justify-content:center;min-height:44px;font-size:1.2rem}
+ .ex>:nth-child(7){grid-area:x;min-height:44px;font-size:1.6rem}
+ .f small{display:block;font-size:.72rem;color:var(--mute);margin-bottom:2px}
+ .ex input[type=text]{padding:8px 10px;text-align:center}
+ .ex input.n{text-align:right}
+ .tp{gap:8px}
+ .stat{flex-wrap:wrap;gap:4px}
+ dialog{width:94vw;max-height:94vh;overflow:auto;padding:12px}
+ dialog video{max-height:62vh}
+ dialog .dc{min-height:44px;padding:6px 16px}
+}
+@media (max-width:360px){.ex{grid-template-columns:40px 1fr 1fr 40px 40px}}
+.empty{color:var(--mute);padding:8px 0}
+.dp{font-size:.85rem;color:var(--mute);margin-top:6px}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.reset{border:1px solid var(--line);background:none;color:var(--mute);padding:7px 12px;border-radius:999px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0f8f7e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="جدول النادي">
+</head>
+<body>
+<main>
+<h1>جدولي في النادي</h1>
+<p class="sub">رتّب أسبوعك، واكتب اسم التمرين لتظهر لك اقتراحات من مكتبة تمارين كبيرة، وسجّل تمارينك بالمجموعات والتكرارات والوزن، وعلّم ما أنجزته. يُحفظ كل شيء تلقائيًا في هذا المتصفح.</p>
+
+<section class="top">
+  <div class="stat"><span id="pt">تمارين الأسبوع</span><span id="pc"></span></div>
+  <div class="bar"><i id="pb"></i></div>
+  <div class="pre">
+    <small>ابدأ ببرنامج جاهز (يستبدل الجدول الحالي)</small>
+    <button class="chip" data-p="full3">جسم كامل · 3 أيام</button>
+    <button class="chip" data-p="split4">تقسيم · 4 أيام</button>
+    <button class="chip" data-p="split5">تقسيم · 5 أيام</button>
+    <button class="reset" id="rs" type="button">بدء أسبوع جديد (إلغاء التعليمات)</button>
+  </div>
+</section>
+
+<section class="top">
+  <div class="stat"><span>تعلّم بالأدلة العلمية</span><span>تفتح نتائج يوتيوب</span></div>
+  <div class="tp" id="tp"></div>
+  <p class="sub" style="margin:10px 0 0;font-size:.9rem">وبجانب كل تمرين في جدولك زر ▶ يفتح فيديوهات شرح أدائه الصحيح. اختر قنوات تعتمد على الدراسات والمصادر، وراجع مدرّبًا مختصًا إن كانت لديك إصابة.</p>
+</section>
+<section class="top">
+  <div class="stat"><span>مكتبة الفيديوهات</span><span id="vcnt"></span></div>
+  <div class="tp" id="vlib"></div>
+</section>
+<dialog id="vd" aria-label="فيديو شرح التمرين"><div class="dh"><b id="vt"></b><button class="dc" id="vc" type="button">إغلاق</button></div><div class="qr"><label for="vq">الجودة</label><select id="vq"></select></div><video id="vv" controls playsinline loop></video></dialog>
+<datalist id="exl"></datalist>
+<section class="days" id="days"></section>
+</main>
+<script>
+(function(){
+var DN=["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
+var TY=["صدر","ظهر","أرجل","أكتاف","ذراعين","بطن وكور","دفع","سحب","علوي","سفلي","جسم كامل","كارديو","HIIT","مرونة وإطالة","راحة"];
+var LIB={
+"صدر":[["ضغط بالبار","4","8"],["ضغط مائل بالدمبل","3","10"],["فلاي","3","12"],["متوازي","3","10"],["كروس أوفر بالكابل","3","12"],["ضغط بالدمبل","3","10"],["ضغط بالآلة","3","12"],["ضغط أرضي (بوش أب)","3","15"],["باترفلاي","3","12"]],
+"ظهر":[["سحب علوي","4","10"],["تجديف بالبار","4","8"],["سحب أرضي","3","10"],["ديدلفت رومانيان","3","8"],["عقلة","3","8"],["تجديف بالدمبل","3","10"],["سحب بذراع واحدة","3","12"],["هايبر إكستنشن","3","12"]],
+"أرجل":[["سكوات","4","8"],["ضغط الأرجل","3","12"],["رفرفة خلفية للفخذ","3","12"],["سمانة","4","15"],["لانجز","3","10"],["رفرفة أمامية للفخذ","3","12"],["هاك سكوات","3","10"],["ديدلفت","3","6"]],
+"أكتاف":[["ضغط أكتاف","4","8"],["رفرفة جانبية","4","12"],["رفرفة خلفية","3","15"],["رفع الكتفين","3","12"],["ضغط أرنولد","3","10"],["رفرفة أمامية","3","12"],["فيس بول","3","15"]],
+"ذراعين":[["باي بار","3","10"],["ترايسبس بالحبل","3","12"],["مطرقة","3","10"],["ديبس","3","10"],["باي تركيز","3","12"],["ترايسبس بار فرنسي","3","10"],["باي بالكابل","3","12"],["أفضل تمرين للباي","3","10"]],
+"بطن وكور":[["بلانك","3","45 ث"],["رفع الأرجل","3","15"],["كرنش","3","20"],["كرنش بالكابل","3","15"],["دوران روسي","3","20"],["عجلة البطن","3","10"]],
+"دفع":[["ضغط بالبار","4","8"],["ضغط أكتاف","3","10"],["ضغط مائل بالدمبل","3","10"],["رفرفة جانبية","3","12"],["ترايسبس بالحبل","3","12"]],
+"سحب":[["سحب علوي","4","10"],["تجديف بالبار","4","8"],["سحب أرضي","3","10"],["رفرفة خلفية","3","15"],["باي بار","3","10"]],
+"علوي":[["ضغط بالبار","4","8"],["تجديف بالبار","4","8"],["ضغط أكتاف","3","10"],["سحب علوي","3","10"],["باي بالدمبل","3","10"],["ترايسبس بالحبل","3","12"]],
+"سفلي":[["سكوات","4","8"],["ديدلفت رومانيان","3","8"],["ضغط الأرجل","3","12"],["لانجز","3","10"],["سمانة","4","15"],["رفع الأرجل","3","15"]],
+"جسم كامل":[["سكوات","3","8"],["ضغط بالبار","3","8"],["تجديف بالبار","3","8"],["ضغط أكتاف","3","10"],["بلانك","3","45 ث"]],
+"كارديو":[["جري أو دراجة","1","25 د"],["سير مائل","1","20 د"],["تجديف بالآلة","1","15 د"],["سباحة","1","30 د"]],
+"HIIT":[["بيربي","4","12"],["قفز الحبل","4","45 ث"],["ماونتن كلايمبر","4","30 ث"],["سكوات قفز","4","15"],["كيتل بيل سوينغ","4","15"]],
+"مرونة وإطالة":[["إطالة الجسم كاملًا","1","10 د"],["يوغا","1","20 د"],["فوم رولر","1","10 د"]],
+"راحة":[]};
+var PRE={
+full3:["جسم كامل","راحة","جسم كامل","راحة","جسم كامل","راحة","راحة"],
+split4:["صدر","ظهر","راحة","أرجل","أكتاف","راحة","راحة"],
+split5:["صدر","ظهر","أرجل","أكتاف","ذراعين","كارديو","راحة"]};
+var KEY="gym-planner-v1",S;
+function mk(t){return (LIB[t]||[]).slice(0,5).map(function(e){return{n:e[0],s:e[1],r:e[2],w:"",d:false}})}
+function fromPre(p){return{days:PRE[p].map(function(t){return{t:t,time:"18:00",ex:mk(t)}})}}
+function load(){try{var v=localStorage.getItem(KEY);if(v){var o=JSON.parse(v);if(o&&o.days&&o.days.length===7)return o}}catch(e){}return fromPre("split4")}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}
+function Q(a,b,c,d){return [["720p · الأصلية","/_blob/"+a],["480p","/_blob/"+b],["360p","/_blob/"+c],["240p · توفير البيانات","/_blob/"+d]]}
+var VIDS={
+"سحب علوي":{t:"السحب العالي: الطريقة الصحيحة",q:[["360p","videos/lat-pulldown-360.mp4"],["240p · توفير البيانات","videos/lat-pulldown-240.mp4"]]},
+"عقلة":{t:"العقلة: الأداء الصحيح",q:[["360p","videos/pullup-360.mp4"],["240p · توفير البيانات","videos/pullup-240.mp4"]]},
+"ديدلفت رومانيان":{t:"الفرق بين الرفعة الرومانية والديدلفت",q:[["360p","videos/rdl-360.mp4"],["240p · توفير البيانات","videos/rdl-240.mp4"]]},
+"سحب أرضي":{t:"السحب الأرضي بالكابل",q:[["360p","videos/seatedrow-360.mp4"],["240p · توفير البيانات","videos/seatedrow-240.mp4"]]},
+"تجديف بالبار":{t:"تجديف الظهر بالبار",q:[["360p","videos/barrow-360.mp4"],["240p · توفير البيانات","videos/barrow-240.mp4"]]}};
+VIDS["ديدلفت"]=VIDS["ديدلفت رومانيان"];
+VIDS["كروس أوفر بالكابل"]={t:"فلاي الصدر بالكابل: الأخطاء الشائعة",q:[["360p","videos/cablefly-360.mp4"],["240p · توفير البيانات","videos/cablefly-240.mp4"]]};
+VIDS["متوازي"]={t:"تعلّم المتوازي",q:[["360p","videos/dips-360.mp4"],["240p · توفير البيانات","videos/dips-240.mp4"]]};
+VIDS["باترفلاي"]={t:"جهاز الباترفلاي: التمرين الصحيح",q:[["360p","videos/butterfly-360.mp4"],["240p · توفير البيانات","videos/butterfly-240.mp4"]]};
+VIDS["ضغط أرنولد"]={t:"ضغط أرنولد الصحيح",q:[["360p","videos/arnold-360.mp4"],["240p · توفير البيانات","videos/arnold-240.mp4"]]};
+VIDS["رفرفة خلفية"]={t:"الأكتاف الخلفية على الجهاز",q:[["360p","videos/reardelt-360.mp4"],["240p · توفير البيانات","videos/reardelt-240.mp4"]]};
+VIDS["رفرفة جانبية"]={t:"الرفرفة الجانبية بالدمبل",q:[["360p","videos/lateral-360.mp4"],["240p · توفير البيانات","videos/lateral-240.mp4"]]};
+VIDS["لانجز"]={t:"لانجز ثابت بالدمبل",q:[["360p","videos/lunge-360.mp4"],["240p · توفير البيانات","videos/lunge-240.mp4"]]};
+VIDS["سمانة"]={t:"السمانة واقفًا وجالسًا: الفرق",q:[["360p","videos/calf-360.mp4"],["240p · توفير البيانات","videos/calf-240.mp4"]]};
+VIDS["رفرفة خلفية للفخذ"]={t:"الفخذ الخلفي على الجهاز (ليج كيرل)",q:[["360p","videos/legcurl-360.mp4"],["240p · توفير البيانات","videos/legcurl-240.mp4"]]};
+VIDS["ضغط الأرجل"]={t:"أقوى 4 تمارين على جهاز ليج برس",q:[["360p","videos/legpress-360.mp4"],["240p · توفير البيانات","videos/legpress-240.mp4"]]};
+VIDS["ضغط مائل بالدمبل"]={t:"ضغط الدمبل المائل للأعلى",q:[["360p","videos/incline-360.mp4"],["240p · توفير البيانات","videos/incline-240.mp4"]]};
+VIDS["أفضل تمرين للباي"]={t:"إيه أفضل تمرين باي؟",q:[["360p","videos/bicepsbest-360.mp4"],["240p · توفير البيانات","videos/bicepsbest-240.mp4"]]};
+VIDS["ديبس"]={t:"الديبس على الكرسي (بنش ديب)",q:[["360p","videos/benchdip-360.mp4"],["240p · توفير البيانات","videos/benchdip-240.mp4"]]};
+VIDS["مطرقة"]={t:"المطرقة بالدمبل",q:[["360p","videos/hammer-360.mp4"],["240p · توفير البيانات","videos/hammer-240.mp4"]]};
+VIDS["ترايسبس بالحبل"]={t:"الترايسبس بالحبل على الكابل",q:[["360p","videos/rope-360.mp4"],["240p · توفير البيانات","videos/rope-240.mp4"]]};
+VIDS["بلانك"]={t:"البلانك لعضلات البطن",q:[["360p","videos/plank-360.mp4"],["240p · توفير البيانات","videos/plank-240.mp4"]]};
+VIDS["ضغط بالبار"]={t:"الضغط بالبار (بنش بريس)",q:[["360p","videos/bench-360.mp4"],["240p · توفير البيانات","videos/bench-240.mp4"]]};
+VIDS["ضغط أكتاف"]={t:"ضغط الأكتاف بالدمبل",q:[["360p","videos/shoulder-360.mp4"],["240p · توفير البيانات","videos/shoulder-240.mp4"]]};
+VIDS["سكوات"]={t:"السكوات الحر: شرح مختصر",q:[["360p","videos/squat-360.mp4"],["240p · توفير البيانات","videos/squat-240.mp4"]]};
+var QK="gym-quality",curV=null;
+function autoQ(){return 0;var c=navigator.connection;if(c){if(c.saveData)return 3;var t=c.effectiveType;if(t==="slow-2g"||t==="2g")return 3;if(t==="3g")return 2}return 0}
+function getQ(){var v="auto";try{v=localStorage.getItem(QK)||"auto"}catch(e){}return v}
+function setSrc(keep){var m=document.getElementById("vv"),sel=document.getElementById("vq"),qs=curV.q,i=sel.value==="auto"?autoQ():+sel.value;
+ var t=keep?m.currentTime:0,pl=keep?!m.paused:true;m.src=qs[i][1];
+ m.addEventListener("loadedmetadata",function f(){m.removeEventListener("loadedmetadata",f);if(t)m.currentTime=t;if(pl&&m.play)m.play().catch(function(){})})}
+function openV(n){var v=VIDS[n],d=document.getElementById("vd"),sel=document.getElementById("vq");curV=v;
+ document.getElementById("vt").textContent=v.t;
+ sel.innerHTML='<option value="auto">تلقائي</option>'+v.q.map(function(x,i){return '<option value="'+i+'">'+x[0]+'</option>'}).join("");
+ var g=getQ();sel.value=(g==="auto"||v.q[+g])?g:"auto";
+ setSrc(false);
+ if(d.showModal)d.showModal();else d.setAttribute("open","")}
+var VID={};
+function yt(n){if(VID[(n||"").trim()])return VID[n.trim()];return "https://www.youtube.com/results?search_query="+encodeURIComponent(n+" شرح الأداء الصحيح")}
+var today=(new Date().getDay()+1)%7;
+var $=function(i){return document.getElementById(i)};
+function stats(){var t=0,d=0;S.days.forEach(function(x){x.ex.forEach(function(e){t++;if(e.d)d++})});
+ $("pc").textContent=d+" من "+t+" تمرين";$("pb").style.width=(t?d/t*100:0)+"%"}
+function draw(){
+ $("days").innerHTML=S.days.map(function(d,i){
+  var done=d.ex.filter(function(e){return e.d}).length;
+  var rows=d.ex.length?'<div class="lbl"><span></span><span>التمرين</span><span>مجموعات</span><span>تكرار</span><span>وزن</span><span></span><span></span></div>'+d.ex.map(function(e,j){
+   return '<div class="ex'+(e.d?' done':'')+'"><input type="checkbox" aria-label="تم" data-i="'+i+'" data-j="'+j+'" data-k="d"'+(e.d?' checked':'')+'>'
+   +'<input type="text" class="n" list="exl" aria-label="اسم التمرين" value="'+esc(e.n)+'" data-i="'+i+'" data-j="'+j+'" data-k="n">'
+   +'<label class="f"><small>مجموعات</small><input type="text" inputmode="numeric" aria-label="المجموعات" value="'+esc(e.s)+'" data-i="'+i+'" data-j="'+j+'" data-k="s"></label>'
+   +'<label class="f"><small>تكرار</small><input type="text" aria-label="التكرارات" value="'+esc(e.r)+'" data-i="'+i+'" data-j="'+j+'" data-k="r"></label>'
+   +'<label class="f"><small>وزن (كغ)</small><input type="text" inputmode="decimal" aria-label="الوزن" placeholder="كغ" value="'+esc(e.w)+'" data-i="'+i+'" data-j="'+j+'" data-k="w"></label>'
+   +'<a class="v" target="_blank" rel="noopener" aria-label="شاهد شرح التمرين" title="شاهد شرح التمرين" href="'+yt(e.n)+'" style="visibility:'+(e.n?'visible':'hidden')+'">▶</a>'
+   +'<button class="x" type="button" aria-label="حذف التمرين" data-a="del" data-i="'+i+'" data-j="'+j+'">×</button></div>'}).join("")
+   :'<div class="empty">'+(d.t==="راحة"?"يوم راحة. العضلات تنمو أثناء الراحة.":"لا توجد تمارين بعد.")+'</div>';
+  return '<article class="day'+(d.t==="راحة"?' rest':'')+(i===today?' today':'')+'">'
+   +'<div class="hd"><h3>'+DN[i]+'</h3>'+(i===today?'<span class="badge">اليوم</span>':'')+'</div>'
+   +'<div class="meta"><select aria-label="نوع التمرين" data-i="'+i+'" data-k="t">'+TY.map(function(t){return '<option'+(t===d.t?' selected':'')+'>'+t+'</option>'}).join("")+'</select>'
+   +'<input type="time" aria-label="الوقت" value="'+d.time+'" data-i="'+i+'" data-k="time"></div>'
+   +rows
+   +(d.ex.length?'<div class="dp">أُنجز '+done+' من '+d.ex.length+'</div>':'')
+   +'<div class="ft"><button type="button" data-a="add" data-i="'+i+'">+ أضف تمرينًا</button>'
+   +(d.t!=="راحة"?'<button type="button" data-a="sug" data-i="'+i+'">تمارين مقترحة</button>':'')+'</div></article>'}).join("");
+ stats()}
+var D=$("days");
+D.addEventListener("input",function(e){var t=e.target,k=t.dataset.k;if(!k||k==="d"||k==="t"||k==="time")return;
+ S.days[t.dataset.i].ex[t.dataset.j][k]=t.value;save();
+ if(k==="n"){var a=t.closest(".ex").querySelector("a.v");a.href=yt(t.value);a.style.visibility=t.value?"visible":"hidden"}});
+D.addEventListener("change",function(e){var t=e.target,k=t.dataset.k;if(!k)return;var d=S.days[t.dataset.i];
+ if(k==="d")d.ex[t.dataset.j].d=t.checked;
+ else if(k==="t"){d.t=t.value;if(!d.ex.length)d.ex=mk(t.value)}
+ else if(k==="time")d.time=t.value||d.time;
+ else return;
+ save();draw()});
+D.addEventListener("click",function(e){var q=e.target.closest("a.v");
+ if(q){var nm=q.closest(".ex").querySelector("input.n").value.trim();if(VIDS[nm]){e.preventDefault();openV(nm)}return}
+ var b=e.target.closest("button[data-a]");if(!b)return;var d=S.days[b.dataset.i],a=b.dataset.a;
+ if(a==="del")d.ex.splice(b.dataset.j,1);
+ else if(a==="add")d.ex.push({n:"",s:"3",r:"10",w:"",d:false});
+ else if(a==="sug")d.ex=mk(d.t);
+ save();draw();
+ if(a==="add"){var n=D.querySelectorAll('article')[b.dataset.i].querySelectorAll('input.n');if(n.length)n[n.length-1].focus()}});
+document.querySelectorAll("[data-p]").forEach(function(b){b.onclick=function(){S=fromPre(b.dataset.p);save();draw()}});
+$("rs").onclick=function(){S.days.forEach(function(d){d.ex.forEach(function(e){e.d=false})});save();draw()};
+var PRI=["صدر","ظهر","أرجل","أكتاف","ذراعين","بطن وكور","كارديو","HIIT","مرونة وإطالة"],CAT={};
+PRI.forEach(function(t){LIB[t].forEach(function(e){if(!CAT[e[0]])CAT[e[0]]=t})});
+CAT["ديدلفت رومانيان"]=CAT["ديدلفت"]="أرجل";
+var nm={};Object.keys(LIB).forEach(function(k){LIB[k].forEach(function(e){nm[e[0]]=1})});
+$("exl").innerHTML=Object.keys(nm).map(function(n){return '<option value="'+n+'" label="'+(CAT[n]||"")+'">'}).join("");
+var TP=[["علم تضخيم العضلات","علم تضخيم العضلات بالأدلة science based hypertrophy"],["كم مجموعة أسبوعيًا؟","عدد المجموعات الأسبوعية المثالي لبناء العضلات دراسات"],["الإحماء ومنع الإصابات","الإحماء قبل التمرين ومنع الإصابات في النادي"],["البروتين والتغذية","كمية البروتين اليومية لبناء العضلات علميا"],["النوم والتعافي","النوم والتعافي العضلي وتأثيره على البناء"],["الأخطاء الشائعة","الأخطاء الشائعة في النادي للمبتدئين"],["الحمل التدريجي","الحمل التدريجي progressive overload شرح"]];
+$("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query='+encodeURIComponent(x[1])+'">'+x[0]+'</a>'}).join("");
+(function(){var d=document.getElementById("vd"),m=document.getElementById("vv");
+ function cl(){m.pause();m.removeAttribute("src");m.load();if(d.close&&d.open)d.close();else d.removeAttribute("open")}
+ document.getElementById("vc").onclick=cl;document.getElementById("vq").onchange=function(){try{localStorage.setItem(QK,this.value)}catch(e){}setSrc(true)};d.addEventListener("close",function(){m.pause()});
+ d.addEventListener("click",function(e){if(e.target===d)cl()})})();
+(function(){var seen=[],g={},n=0;
+ Object.keys(VIDS).forEach(function(k){var v=VIDS[k];if(seen.indexOf(v)>-1)return;seen.push(v);n++;var c=CAT[k]||"أخرى";(g[c]=g[c]||[]).push(k)});
+ var h="";PRI.concat(["أخرى"]).forEach(function(c){if(!g[c])return;
+  h+='<div class="gr"><div class="gh">'+c+' <span>('+g[c].length+')</span></div><div class="tp">'+g[c].map(function(k){return '<button type="button" class="chip" data-vn="'+k+'" title="'+VIDS[k].t+'">▶ '+k+'</button>'}).join("")+'</div></div>'});
+ var L=document.getElementById("vlib");L.innerHTML=h;L.className="";document.getElementById("vcnt").textContent=n+" فيديو";
+ L.addEventListener("click",function(e){var b=e.target.closest("[data-vn]");if(b)openV(b.dataset.vn)})})();
+S=load();draw();
+})();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>
