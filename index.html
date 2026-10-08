@@ -293,8 +293,10 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
  function say(force){
   if(!ss||!g.text.trim()||ss.speaking)return;
   var vs=(ss.getVoices()||[]).filter(function(v){return /^ar/i.test(v.lang)});
-  var u=new SpeechSynthesisUtterance(g.text);u.lang="ar-SA";if(vs[0]){u.voice=vs[0];u.lang=vs[0].lang}
-  u.rate=.95;u.pitch=1.1;
+  var FM=/laila|leila|hoda|zariyah|zira|salma|hala|fatima|amira|noura|\bfemale\b/i,ML=/naayf|nayef|maged|majed|tarik|tareq|hamed|shakir|bassel|\bmale\b/i;
+  var fv=vs.filter(function(v){return FM.test(v.name)})[0],pick=fv||vs.filter(function(v){return !ML.test(v.name)})[0]||vs[0];
+  var u=new SpeechSynthesisUtterance(g.text);u.lang="ar-SA";if(pick){u.voice=pick;u.lang=pick.lang}
+  u.rate=.95;u.pitch=fv?1.1:1.3;
   u.onstart=function(){spoken=true};
   ss.cancel();ss.speak(u)}
  function arm(){
