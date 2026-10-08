@@ -115,6 +115,15 @@ button,select,input,a{touch-action:manipulation;-webkit-tap-highlight-color:tran
 :focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .reset{border:1px solid var(--line);background:none;color:var(--mute);padding:7px 12px;border-radius:999px}
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+.big{margin:6px 0 2px;display:flex;align-items:baseline;gap:4px}
+.big b{font-size:2.6rem;font-weight:800;line-height:1.1;color:var(--acc);display:inline-block}
+.big small{color:var(--mute)}
+.big b.pop{animation:pp .45s}
+@keyframes pp{50%{transform:scale(1.25)}}
+.gain{margin-inline-start:10px;color:var(--acc);font-weight:800;opacity:0}
+.gain.on{animation:gn 1.3s ease-out}
+@keyframes gn{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-14px)}}
+@media (prefers-reduced-motion:reduce){.big b.pop,.gain.on{animation:none}}
 </style>
 
 <link rel="manifest" href="./manifest.webmanifest">
@@ -128,6 +137,13 @@ button,select,input,a{touch-action:manipulation;-webkit-tap-highlight-color:tran
 <h1>جدولي في النادي</h1>
 <p class="sub">رتّب أسبوعك، واكتب اسم التمرين لتظهر لك اقتراحات من مكتبة تمارين كبيرة، وسجّل تمارينك بالمجموعات والتكرارات والوزن، وعلّم ما أنجزته. يُحفظ كل شيء تلقائيًا في هذا المتصفح.</p>
 
+<section class="top pts" aria-label="نقاط الفوز">
+  <div class="stat"><span>نقاط الفوز</span><span id="lvl"></span></div>
+  <div class="big"><b id="ptot">0</b><small> نقطة</small><span class="gain" id="pgain"></span></div>
+  <div class="bar"><i id="lb"></i></div>
+  <div class="stat"><span id="lnext"></span><span id="pwk"></span></div>
+  <p class="sub" style="margin:8px 0 0;font-size:.85rem">+10 لكل تمرين تُنجزه · +50 لكل يوم تُكمله · +200 إذا أكملتَ الأسبوع كله</p>
+</section>
 <section class="top">
   <div class="stat"><span id="pt">تمارين الأسبوع</span><span id="pc"></span></div>
   <div class="bar"><i id="pb"></i></div>
@@ -308,6 +324,33 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
  tx.oninput=function(){g.text=tx.value;sv()};
  document.getElementById("gTest").onclick=function(){if(ss&&ss.speaking)ss.cancel();say(true)};
  if(g.on&&ss){arm();setTimeout(function(){if(!spoken&&g.on)say(false)},600)}
+})();
+(function(){
+ var K="gym-points",P={total:0,weeks:0},last=null;
+ try{var o=JSON.parse(localStorage.getItem(K)||"null");if(o)P={total:+o.total||0,weeks:+o.weeks||0}}catch(e){}
+ function sv(){try{localStorage.setItem(K,JSON.stringify(P))}catch(e){}}
+ var LV=[[0,"مبتدئ"],[100,"نشيط"],[300,"قوي"],[700,"بطل"],[1500,"أسطورة"]];
+ function wk(){var d=0,days=0,tot=0;
+  S.days.forEach(function(x){var n=x.ex.length,k=x.ex.filter(function(e){return e.d}).length;tot+=n;d+=k;if(n&&k===n)days++});
+  var all=tot>0&&d===tot;return{p:d*10+days*50+(all?200:0),all:all}}
+ function upd(){
+  var w=wk(),t=P.total+w.p,i=0;
+  for(var j=0;j<LV.length;j++)if(t>=LV[j][0])i=j;
+  var el=document.getElementById("ptot");if(!el)return;
+  el.textContent=t;
+  document.getElementById("lvl").textContent="المستوى: "+LV[i][1];
+  var nx=LV[i+1];
+  document.getElementById("lb").style.width=(nx?(t-LV[i][0])/(nx[0]-LV[i][0])*100:100)+"%";
+  document.getElementById("lnext").textContent=nx?("باقي "+(nx[0]-t)+" نقطة للمستوى «"+nx[1]+"»"):"وصلتَ إلى أعلى مستوى";
+  document.getElementById("pwk").textContent="هذا الأسبوع: "+w.p+" · أسابيع مكتملة: "+P.weeks;
+  if(last!==null&&t>last){
+   var g=document.getElementById("pgain");g.textContent="+"+(t-last);g.classList.remove("on");void g.offsetWidth;g.classList.add("on");
+   el.classList.remove("pop");void el.offsetWidth;el.classList.add("pop")}
+  last=t}
+ function bank(){var w=wk();if(w.p>0){P.total+=w.p;if(w.all)P.weeks++;sv()}}
+ var od=draw;draw=function(){od.apply(this,arguments);upd()};
+ var rs=document.getElementById("rs");if(rs)rs.addEventListener("click",bank,true);
+ document.querySelectorAll("[data-p]").forEach(function(b){b.addEventListener("click",bank,true)});
 })();
 S=load();draw();
 })();
