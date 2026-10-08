@@ -1,6 +1,16 @@
 const CACHE = "gym-planner-v1";
 const CACHE_NAME = 'gym-planner-v1';
-
+'./videos/biceps.mp4',
+  const FILES_TO_CACHE = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './videos/biceps.mp4'
+];
+'./videos/arnold-240',
+'./videos/chest.mp4',
+'./videos/shoulders.mp4',
+'./videos/back.mp4',
 const FILES_TO_CACHE = [
   './',
   './index.html',
