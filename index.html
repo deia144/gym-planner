@@ -562,7 +562,7 @@ dialog#fin::backdrop{background:#000}
 </section>
 <dialog id="vd" aria-label="فيديو شرح التمرين"><div class="dh"><b id="vt"></b><button class="dc" id="vc" type="button">إغلاق</button></div><div class="qr"><label for="vq">الجودة</label><select id="vq"></select></div><video id="vv" controls playsinline loop></video><div id="vph" hidden><span>🎬</span><p>لا يوجد فيديو محفوظ لهذا التمرين</p><a id="swyt" target="_blank" rel="noopener" hidden>🔎 ابحث عن شرح هذا التمرين في يوتيوب</a></div><div class="swr" id="swr"><div class="swt" id="swt" role="timer" aria-label="وقت التمرين">0:00</div><div class="swb"><button type="button" class="chip pri" id="swgo">▶ ابدأ</button><button type="button" class="chip" id="swlap">⚑ جولة</button><button type="button" class="chip" id="swrs">↺ صفّر</button><button type="button" class="chip" id="swsv">💾 احفظ للتمرين</button></div><div class="rcd" id="rcd" hidden><div><small id="rch"></small><b id="rct">0:00</b></div><button type="button" class="chip" id="rcx">تخطي الراحة</button></div><div class="rcfg"><label for="rcs">⏱ الراحة بعد هذا التمرين</label><select id="rcs"></select></div><div class="rcfg"><label><input type="checkbox" id="rsoN"> راحة تلقائية بين الجولات</label></div><div class="swl" id="swl"></div><p class="sub" id="swm"></p></div></dialog>
 <datalist id="exl"></datalist>
-<div class="remb" id="remb" hidden></div><section class="top" id="evalc" aria-label="تقييم الأسبوع"></section><div class="dpick" id="dpick" role="group" aria-label="اختر أيام التمرين"></div><div class="rmw"><button type="button" class="chip" id="rmb">📅 أضف تذكيرات التمرين إلى التقويم</button><button type="button" class="chip" id="rnb">🔔 إشعارات المؤقت</button><p class="sub" id="rmm"></p></div><section class="days" id="days"></section>
+<div class="remb" id="remb" hidden></div><section class="top" id="evalc" aria-label="تقييم الأسبوع"></section><div class="dpick" id="dpick" role="group" aria-label="اختر أيام التمرين"></div><div class="rmw"><button type="button" class="chip" id="rmb">📅 أضف تذكيرات التمرين إلى التقويم</button><button type="button" class="chip" id="rnb">🔔 إشعارات المؤقت</button><button type="button" class="chip" id="rtest">🎉 جرّب شاشة الإنجاز</button><p class="sub" id="rmm"></p></div><section class="days" id="days"></section>
 </main>
 <script>
 (function(){
@@ -788,6 +788,8 @@ $("rnb").onclick=function(){var m=$("rmm");
  Notification.requestPermission().then(function(p){if(p==="granted"){try{localStorage.setItem("gym-notify","1")}catch(e){}
   m.textContent="تم تفعيل إشعارات المؤقت. قد لا تصل إذا أُغلق التطبيق أو قُفلت الشاشة لأن الآيفون يوقف التطبيقات في الخلفية. للتذكير الموثوق استخدم تذكيرات التقويم."}
   else m.textContent="لم يُمنح إذن الإشعارات. يمكنك السماح به من إعدادات الآيفون ثم المحاولة مرة أخرى."})};
+$("rtest").onclick=function(){var i=today;if(!S.days[i]||S.days[i].t==="راحة"||!S.days[i].ex.length){for(var k=0;k<7;k++)if(S.days[k].t!=="راحة"&&S.days[k].ex.length){i=k;break}}
+ if(window.GFinish)window.GFinish(i)};
 /* تحميل الفيديوهات للعمل بدون إنترنت */
 (function(){
  if(!window.caches)return;
@@ -892,20 +894,20 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
    if(log[key(d)])c++;else break}
   return c}
  var FM=["🔥 أنت وحش! لا شيء يوقفك 💪","⚡ التعب مؤقت والفخر يدوم 🏆","🦾 كل تكرار قرّبك من أفضل نسخة منك 😤","🌟 الانضباط يغلب الدافع، وأنت أثبتّ ذلك ✅","😎 جسمك يشكرك الآن وغداً ستشكر نفسك 🙌","🥇 اشرب الماء وكل بروتيناً ليكتمل التعب بالنتيجة 🍗💧","🚀 غداً أقوى من اليوم، استمر! 🔥"],FE=["💪","🔥","🏆","⚡","🎉","😤","🥇","🦾","🌟","🚀"],fiv=null;
- function finish(i){try{var k="gym-fin-"+key(new Date())+"-"+i;if(localStorage.getItem(k))return;localStorage.setItem(k,"1")}catch(e){}
+ function finish(i){
   var dg=document.getElementById("fin"),v=document.getElementById("finv"),t=document.getElementById("fint"),r=document.getElementById("fine");if(!dg||!v)return;
   var d=S.days[i],n=d.ex.length,idx=0;
   function show(){t.classList.remove("in");void t.offsetWidth;t.textContent=idx===0?"🎊 أحسنت! أنهيت "+n+" تمارين ("+d.t+") 🎊":FM[(idx-1)%FM.length];t.classList.add("in");idx++}
   show();clearInterval(fiv);fiv=setInterval(show,3200);
   r.textContent="";for(var j=0;j<22;j++){var s=document.createElement("span");s.textContent=FE[j%FE.length];s.style.left=(Math.random()*96)+"%";s.style.animationDelay=(Math.random()*4)+"s";s.style.animationDuration=(4+Math.random()*4)+"s";s.style.fontSize=(1.2+Math.random()*1.4)+"rem";r.appendChild(s)}
-  v.style.display="";v.controls=false;v.onerror=function(){v.style.display="none"};v.src="videos/finish.mp4";
+  v.style.display="";v.controls=false;v.muted=false;v.onerror=function(){v.style.display="none"};v.src="videos/finish.mp4";
   if(dg.showModal)dg.showModal();else dg.setAttribute("open","");
   try{v.currentTime=0}catch(e){}
-  var p=v.play();if(p&&p.catch)p.catch(function(){v.controls=true})}
+  var p=v.play();if(p&&p.catch)p.catch(function(){v.muted=true;v.controls=true;var q=v.play();if(q&&q.catch)q.catch(function(){})})}
  (function(){var dg=document.getElementById("fin"),x=document.getElementById("finx");if(!dg)return;
   dg.addEventListener("close",function(){var v=document.getElementById("finv");if(v)v.pause();clearInterval(fiv);fiv=null});
   if(x)x.onclick=function(){if(dg.close)dg.close();else dg.removeAttribute("open")}})();
- window.GBurst=function(){burst()};function burst(){
+ window.GFinish=function(i){finish(i)};window.GBurst=function(){burst()};function burst(){
   var cv=document.getElementById("cf");if(!cv||(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches))return;
   var W=cv.width=innerWidth,H=cv.height=innerHeight,x=cv.getContext("2d"),cols=["#14b8a6","#3b82f6","#f59e0b","#ef4444","#8b5cf6","#ec4899"],P=[];
   for(var i=0;i<90;i++)P.push({x:W/2,y:H*.4,vx:(Math.random()-.5)*14,vy:-Math.random()*13-3,s:Math.random()*7+4,c:cols[i%6],r:Math.random()*6,vr:(Math.random()-.5)*.4});
