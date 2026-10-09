@@ -622,7 +622,7 @@ VIDS["ضغط بالبار"]={t:"الضغط بالبار (بنش بريس)",q:[["
 VIDS["ضغط أكتاف"]={t:"ضغط الأكتاف بالدمبل",q:[["360p","videos/shoulder-360.mp4"],["240p · توفير البيانات","videos/shoulder-240.mp4"]]};
 VIDS["سكوات"]={t:"السكوات الحر: شرح مختصر",q:[["360p","videos/squat-360.mp4"],["240p · توفير البيانات","videos/squat-240.mp4"]]};
 /* الفيديوهات المتوفرة فعلاً في مجلد videos */
-(function(){var F={};"arnold-240 barrow-240 bench-240 benchdip-240 bicepsbest-240 butterfly-240 cablefly-240 cablefly-360 calf-240 dips-240 hammer-240 incline-240 lat-pulldown-240 lateral-240 legcurl-240 legpress-240 lunge-240 plank-240 pullup-240 rdl-240".split(" ").forEach(function(n){F["videos/"+n+".mp4"]=1});
+(function(){var F={};"arnold-240 barrow-240 bench-240 benchdip-240 bicepsbest-240 butterfly-240 cablefly-240 cablefly-360 calf-240 dips-240 hammer-240 incline-240 lat-pulldown-240 lateral-240 legcurl-240 legpress-240 lunge-240 plank-240 pullup-240 rdl-240 reardelt-360 seatedrow-240 shoulder-240 squat-240".split(" ").forEach(function(n){F["videos/"+n+".mp4"]=1});
  Object.keys(VIDS).forEach(function(n){var v=VIDS[n];v.q=v.q.filter(function(x){return F[x[1]]});if(!v.q.length)delete VIDS[n]})})();
 var QK="gym-quality",curV=null,CQ={};
 function autoQ(){return 0;var c=navigator.connection;if(c){if(c.saveData)return 3;var t=c.effectiveType;if(t==="slow-2g"||t==="2g")return 3;if(t==="3g")return 2}return 0}

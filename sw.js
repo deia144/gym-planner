@@ -1,4 +1,4 @@
-const CACHE = "gym-planner-v37";
+const CACHE = "gym-planner-v38";
 const VCACHE = "gym-videos"; // ثابت: لا يُحذف عند تحديث نسخة التطبيق
 const APP = ["./", "./index.html", "./manifest.webmanifest"];
 
