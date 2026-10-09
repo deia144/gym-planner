@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<section class="top" aria-label="الترحيب الصوتي">
-  <div class="stat"><span>الترحيب الصوتي</span><label class="sw"><input type="checkbox" id="gOn"> عند فتح التطبيق</label></div>
-  <div class="gr2"><input type="text" id="gTxt" aria-label="نص الترحيب"><button type="button" class="chip" id="gTest">▶ جرّب</button></div>
-  <p class="sub" style="margin:8px 0 0;font-size:.85rem">قد يمنع المتصفح تشغيل الصوت تلقائيًا، فيُشغَّل عند أول لمسة للشاشة.</p>
-</section>
 <link rel="apple-touch-icon" sizes="180x180" href="./icon2.png">
 <html lang="ar" dir="rtl">
 <head>
@@ -259,31 +254,6 @@ select,input[type=time],input[type=text],input[type=number]{border-radius:10px}
 .mfab{position:fixed;z-index:21;right:14px;bottom:calc(82px + env(safe-area-inset-bottom,0px));width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);box-shadow:var(--sh);font-size:1.3rem;cursor:pointer}
 .mfab[hidden]{display:none}
 
-/* ===== جلسة التمرين ===== */
-.sclock{font-size:3.2rem;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;direction:ltr;margin:6px 0 2px;line-height:1.2;background:linear-gradient(90deg,#14b8a6,#3b82f6);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sctl{display:flex;gap:8px;justify-content:center;margin:10px 0}
-.sctl .chip{min-height:48px;padding:10px 22px;font-size:1.05rem}
-.ses .chip.pri{background:linear-gradient(135deg,var(--acc),#3b82f6);color:#fff;border:0}
-.sset{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
-.sset label{margin:0;font-weight:600;font-size:.9rem}
-.sset select,.sset input[type=text]{width:100%;margin-top:4px}
-.sset label.sw{font-weight:500;grid-column:1/-1}
-@media (min-width:640px){.sset{grid-template-columns:1fr 1fr 1fr}}
-.spk{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.sbar{position:fixed;z-index:30;top:calc(8px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:6px 8px 6px 14px;border-radius:999px;background:linear-gradient(135deg,#0f766e,#1d4ed8);color:#fff;box-shadow:0 10px 26px rgba(0,0,0,.35)}
-.sbar[hidden]{display:none}
-.sbar span{font-weight:800;font-variant-numeric:tabular-nums;direction:ltr;min-width:52px;text-align:center}
-.sbar button{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.2);color:#fff;font-size:1.05rem;cursor:pointer}
-
-/* ===== فيديو داخل المؤقت ===== */
-.svw{position:relative;margin:10px 0;border-radius:16px;overflow:hidden;background:#000}
-.svw[hidden]{display:none}
-.svw video{width:100%;max-height:52vh;display:block}
-.svb{position:absolute;top:8px;left:8px;display:flex;gap:6px}
-.svb button{width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:1rem;cursor:pointer}
-.ses .bdb{display:flex;gap:8px;grid-column:1/-1}
-.ses label.chip{display:inline-flex;align-items:center;margin:0;cursor:pointer;font-size:inherit;font-weight:600}
-
 /* ===== ساعة توقيت التمرين ===== */
 .swr{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;text-align:center}
 .swt{font-size:2.6rem;font-weight:800;font-variant-numeric:tabular-nums;direction:ltr;line-height:1.2;background:linear-gradient(90deg,#14b8a6,#3b82f6);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -346,6 +316,9 @@ select,input[type=time],input[type=text],input[type=number]{border-radius:10px}
 .nhs i{display:block;width:100%;max-width:34px;border-radius:6px 6px 2px 2px;background:var(--acc);min-height:3px}
 @media (min-width:640px){.nadd{grid-template-columns:repeat(4,1fr)}.nadd .w{grid-column:span 2}}
 @media (prefers-reduced-motion:reduce){.nbr .b i{transition:none}}
+
+.nut .qz{grid-column:1/-1;border:1px dashed var(--line);border-radius:12px;padding:10px;display:grid;gap:8px}
+.nut .qz label{font-weight:500}
 </style>
 
 <link rel="manifest" href="./manifest.webmanifest">
@@ -364,24 +337,7 @@ select,input[type=time],input[type=text],input[type=number]{border-radius:10px}
 </header>
 <section class="wk" id="wk" aria-label="أيام الأسبوع"></section>
 <section class="kp" id="kp" aria-label="إحصائيات"></section>
-<section class="top ses" id="ses" aria-label="جلسة التمرين">
-  <div class="stat"><span>🏁 جلسة التمرين</span><span id="swk"></span></div>
-  <div class="sclock" id="sclk" role="timer">00:00</div>
-  <div class="bar"><i id="sbar"></i></div>
-  <div class="svw" id="svw" hidden><video id="svd" playsinline muted loop controls></video><div class="svb"><button type="button" id="svmute" aria-label="الصوت">🔇</button><button type="button" id="svfs" aria-label="ملء الشاشة">⛶</button></div></div>
-  <div class="sctl"><button class="chip pri" id="sgo" type="button">▶ ابدأ التمرين</button><button class="chip" id="sfin" type="button" hidden>🏁 إنهاء</button></div>
-  <div class="sset">
-    <label>المدة بالدقائق (0 = بدون حد)<input type="text" inputmode="numeric" id="sdur" value="60"></label>
-    <label>🎵 موسيقى التمرين<select id="smus"></select></label>
-    <label>🎧 موسيقى بعد الانتهاء<select id="sfm"></select></label>
-    <label class="sw"><input type="checkbox" id="sauto"> ابدأ الجلسة تلقائيًا عند تعليم أول تمرين</label>
-    <label>🎬 فيديو داخل المؤقت<select id="svsel"></select></label>
-    <label class="sw"><input type="checkbox" id="svauto" checked> شغّل الفيديو تلقائيًا عند بدء المؤقت</label>
-    <div class="bdb"><label class="chip" for="svfile">➕ فيديو من جهازك</label><input type="file" id="svfile" accept="video/*" hidden></div>
-  </div>
-  <div id="spick" hidden></div>
-  <p class="sub" id="sinfo" style="margin:10px 0 0;font-size:.85rem">عند البدء تشتغل موسيقى التمرين وتبدأ العدّ، وعند الانتهاء تتوقف وتشتغل موسيقى أخرى تختارها. أضف أغانيك أولًا من قسم الموسيقى.</p>
-</section>
+
 <section class="top bd" id="bd" aria-label="تطور الجسم">
   <div class="stat"><span>📸 تطور الجسم</span><span id="bdc"></span></div>
   <div class="bdb"><button class="chip pri" id="bCam" type="button">📷 كاميرا</button><label class="chip" for="bFile">🖼️ من الجهاز</label><input type="file" id="bFile" accept="image/*" hidden><button class="chip" id="bCmp" type="button">⇆ قارن قبل وبعد</button></div>
@@ -400,11 +356,17 @@ select,input[type=time],input[type=text],input[type=number]{border-radius:10px}
       <label>الوزن (كغ)<input type="text" inputmode="decimal" id="nw" placeholder="75"></label>
       <label>نشاطك<select id="nact"><option value="1.375">خفيف (1 إلى 3 أيام)</option><option value="1.55" selected>متوسط (3 إلى 5 أيام)</option><option value="1.725">عالٍ (6 إلى 7 أيام)</option></select></label>
       <label>هدفك<select id="ngoal"><option value="bulk">بناء عضل (فائض بسيط)</option><option value="keep">ثبات الوزن</option><option value="cut">تنشيف (عجز بسيط)</option></select></label>
+            <label class="w">🧬 نوع جسمك<select id="nbt"><option value="">لم أحدده بعد</option><option value="ecto">نحيف: صعب أن أزيد وزني (إكتومورف)</option><option value="meso">رياضي: بنية متوازنة (ميزومورف)</option><option value="endo">ممتلئ: أزيد وزني بسهولة (إندومورف)</option></select></label>
+      <div class="qz"><b style="font-size:.9rem">لا تعرف نوع جسمك؟ أجب عن ثلاثة أسئلة:</b>
+        <label>وزنك<select id="nq1"><option value="ecto">أنحف بسهولة ويصعب أن أزيد</option><option value="meso">أزيد وأنقص بسهولة معقولة</option><option value="endo">أزيد بسهولة ويصعب أن أنحف</option></select></label>
+        <label>بنيتك<select id="nq2"><option value="ecto">نحيفة وعظام رفيعة وكتفان ضيقان</option><option value="meso">كتفان عريضان وبنية رياضية</option><option value="endo">بنية عريضة ومستديرة وخصر عريض</option></select></label>
+        <label>بناء العضل عندك<select id="nq3"><option value="ecto">بطيء حتى مع التمرين</option><option value="meso">سريع نسبيًا</option><option value="endo">سريع لكن تزيد معه الدهون</option></select></label>
+        <button type="button" class="chip" id="nqz">حدّد نوعي</button></div>
       <label class="w">تفضيلاتك وما لا تأكله (للذكاء الاصطناعي)<input type="text" id="npref" placeholder="مثال: لا آكل السمك، حساسية من المكسرات"></label>
       <button type="button" class="chip pri" id="ncalc">احسب أهدافي</button>
     </div>
   </details>
-  <div class="ntg" id="ntg"></div>
+  <div class="ntg" id="ntg"></div><div id="nbtip"></div>
   <div id="nbars"></div>
   <div class="nwt"><b>💧 الماء</b><button type="button" id="nwm" aria-label="أنقص كأسًا">−</button><span class="cups" id="nwv"></span><button type="button" id="nwp" aria-label="أضف كأسًا">+</button></div>
   <div class="stat"><span>➕ أضف طعامًا</span></div>
@@ -456,7 +418,6 @@ select,input[type=time],input[type=text],input[type=number]{border-radius:10px}
 <div class="tmr" id="tmr"><button class="tb" id="tb" type="button" aria-label="مؤقت الراحة">⏱</button><div class="tp2" id="tp2" hidden><b id="tt">00:00</b><div><button type="button" data-s="60">60 ث</button><button type="button" data-s="90">90 ث</button><button type="button" data-s="120">120 ث</button><button type="button" class="x" data-s="0">إيقاف</button></div></div></div>
 <canvas id="cf" aria-hidden="true"></canvas>
 <dialog id="bdlg" class="bdlg" aria-label="تطور الجسم"></dialog>
-<div class="sbar" id="sbar2" hidden><span id="sbt">00:00</span><button type="button" id="sbp" aria-label="إيقاف مؤقت">⏸</button><button type="button" id="sbf" aria-label="إنهاء التمرين">🏁</button></div>
 <button class="mfab" id="mfab" type="button" aria-label="تشغيل أو إيقاف الموسيقى" hidden>🎵</button>
 
 <section class="top pts" aria-label="نقاط الفوز">
@@ -624,29 +585,6 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
   h+='<div class="gr"><div class="gh">'+c+' <span>('+g[c].length+')</span></div><div class="tp">'+g[c].map(function(k){return '<button type="button" class="chip" data-vn="'+k+'" title="'+VIDS[k].t+'">▶ '+k+'</button>'}).join("")+'</div></div>'});
  var L=document.getElementById("vlib");L.innerHTML=h;L.className="";document.getElementById("vcnt").textContent=n+" فيديو";
  L.addEventListener("click",function(e){var b=e.target.closest("[data-vn]");if(b)openV(b.dataset.vn)})})();
-(function(){
- var K="gym-greet",g={on:true,text:"مرحبا ضياء، اشتقتلك"},ss=window.speechSynthesis,spoken=false;
- try{var o=JSON.parse(localStorage.getItem(K)||"null");if(o)g={on:o.on!==false,text:o.text||g.text}}catch(e){}
- function sv(){try{localStorage.setItem(K,JSON.stringify(g))}catch(e){}}
- function say(force){
-  if(!ss||!g.text.trim()||ss.speaking)return;
-  var vs=(ss.getVoices()||[]).filter(function(v){return /^ar/i.test(v.lang)});
-  var FM=/laila|leila|hoda|zariyah|zira|salma|hala|fatima|amira|noura|\bfemale\b/i,ML=/naayf|nayef|maged|majed|tarik|tareq|hamed|shakir|bassel|\bmale\b/i;
-  var fv=vs.filter(function(v){return FM.test(v.name)})[0],pick=fv||vs.filter(function(v){return !ML.test(v.name)})[0]||vs[0];
-  var u=new SpeechSynthesisUtterance(g.text);u.lang="ar-SA";if(pick){u.voice=pick;u.lang=pick.lang}
-  u.rate=.95;u.pitch=fv?1.1:1.3;
-  u.onstart=function(){spoken=true};
-  ss.cancel();ss.speak(u)}
- function arm(){
-  function f(){document.removeEventListener("pointerdown",f,true);document.removeEventListener("keydown",f,true);if(!spoken&&g.on)say(true)}
-  document.addEventListener("pointerdown",f,true);document.addEventListener("keydown",f,true)}
- var on=document.getElementById("gOn"),tx=document.getElementById("gTxt");
- on.checked=g.on;tx.value=g.text;
- on.onchange=function(){g.on=on.checked;sv()};
- tx.oninput=function(){g.text=tx.value;sv()};
- document.getElementById("gTest").onclick=function(){if(ss&&ss.speaking)ss.cancel();say(true)};
- if(g.on&&ss){arm();setTimeout(function(){if(!spoken&&g.on)say(false)},600)}
-})();
 (function(){
  var K="gym-points",P={total:0,weeks:0},last=null;
  try{var o=JSON.parse(localStorage.getItem(K)||"null");if(o)P={total:+o.total||0,weeks:+o.weeks||0}}catch(e){}
@@ -915,112 +853,6 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
  window.GM={cb:null,tracks:function(){return tr.map(function(t){return {id:t.id,name:t.name}})},playId:function(id){var i=tr.findIndex(function(t){return t.id===id});if(i<0)return false;play(i);return true},playAll:function(){if(!tr.length)return false;shuf=true;$("mshuf").setAttribute("aria-pressed","true");cur=-1;next(1);return true},pause:function(){au.pause()},resume:function(){if(cur>=0){var p=au.play();if(p&&p.catch)p.catch(function(){})}},stop:function(){au.pause()}}; ui();load();
 })();
 (function(){
- var $=function(i){return document.getElementById(i)},SK="gym-sess",SS="gym-sess-set",SL="gym-sessions";
- var st={s:"idle",t0:0,acc:0,dur:0},set={dur:60,mus:"none",fin:"none",auto:false},iv=null,ctx=null,hist=[];
- try{var a=JSON.parse(localStorage.getItem(SS)||"null");if(a)set={dur:a.dur>=0?+a.dur:60,mus:a.mus||"none",fin:a.fin||"none",auto:!!a.auto}}catch(e){}
- try{hist=JSON.parse(localStorage.getItem(SL)||"[]")||[]}catch(e){hist=[]}
- function ssv(){try{localStorage.setItem(SS,JSON.stringify(set))}catch(e){}}
- function sst(){try{localStorage.setItem(SK,JSON.stringify(st))}catch(e){}}
- function fmt(s){s=Math.max(0,Math.round(s));var h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60,p=function(n){return (n<10?"0":"")+n};return (h?h+":":"")+p(m)+":"+p(r)}
- function el(){return (st.acc+(st.s==="run"?Date.now()-st.t0:0))/1000}
- function unlock(){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.resume)ctx.resume()}catch(e){}}
- function beep(){try{unlock();[0,.28,.56].forEach(function(s){var o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+s;o.frequency.value=988;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.3,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.22);o.start(t);o.stop(t+.25)})}catch(e){}}
- function tracks(){return window.GM?GM.tracks():[]}
- function fill(){
-  var T=tracks(),o='<option value="none">بدون موسيقى</option><option value="all">كل أغانيّ (عشوائي)</option>'+T.map(function(t){return '<option value="'+t.id+'">'+String(t.name).replace(/[&<>"]/g,"")+'</option>'}).join("");
-  ["smus","sfm"].forEach(function(id){var s=$(id),v=id==="smus"?set.mus:set.fin;s.innerHTML=o;s.value=v;if(s.value!==v){s.value="none"}})}
- function weekTxt(){
-  var n=new Date(),sw=new Date(n.getFullYear(),n.getMonth(),n.getDate()-((n.getDay()+1)%7)).getTime(),w=hist.filter(function(h){return h.ts>=sw}),sec=w.reduce(function(a,h){return a+h.sec},0);
-  $("swk").textContent=w.length?("هذا الأسبوع: "+Math.round(sec/60)+" د · "+w.length+" جلسة"):""}
- function paint(){
-  var run=st.s!=="idle",rem=st.dur>0?st.dur-el():el();
-  var txt=fmt(rem);$("sclk").textContent=txt;$("sbt").textContent=txt;
-  $("sbar").style.width=(st.dur>0&&run?Math.min(100,el()/st.dur*100):(run?100:0))+"%";
-  $("sgo").textContent=st.s==="run"?"⏸ إيقاف مؤقت":(st.s==="pause"?"▶ متابعة":"▶ ابدأ التمرين");
-  $("sfin").hidden=!run;$("sbar2").hidden=!run;$("sbp").textContent=st.s==="run"?"⏸":"▶"}
- function music(v){
-  if(!window.GM||v==="none")return false;
-  if(v==="all")return GM.playAll();
-  return GM.playId(+v)}
- function tick(){paint();if(st.s==="run"&&st.dur>0&&el()>=st.dur)finish(true)}
- function start(){
-  unlock();
-  var d=parseInt($("sdur").value,10);set.dur=isNaN(d)||d<0?0:d;ssv();
-  st={s:"run",t0:Date.now(),acc:0,dur:set.dur*60};sst();
-  $("spick").hidden=true;
-  var ok=music(set.mus);
-  $("sinfo").textContent=set.mus!=="none"&&!ok?"لم أجد أغاني. أضفها من قسم الموسيقى ثم اختر موسيقى التمرين.":"بالتوفيق! 💪";
-  clearInterval(iv);iv=setInterval(tick,500);paint();if(window.GSH)GSH.start()}
- function pause(){st.acc=el()*1000;st.s="pause";sst();if(window.GM)GM.pause();paint();if(window.GSH)GSH.pause()}
- function resume(){st.t0=Date.now();st.s="run";sst();if(window.GM&&set.mus!=="none")GM.resume();paint();if(window.GSH)GSH.resume()}
- function finish(auto){
-  if(st.s==="idle")return;
-  var sec=el();clearInterval(iv);iv=null;st={s:"idle",t0:0,acc:0,dur:0};sst();
-  if(sec>=30){hist.push({ts:Date.now(),sec:Math.round(sec)});hist=hist.slice(-200);try{localStorage.setItem(SL,JSON.stringify(hist))}catch(e){}}
-  if(window.GM)GM.stop();
-  beep();if(navigator.vibrate)navigator.vibrate([300,150,300,150,300]);if(window.GBurst)GBurst();
-  var played=music(set.fin);
-  $("sinfo").textContent="🎉 أحسنت! مدة التمرين "+Math.max(1,Math.round(sec/60))+" دقيقة."+(played?" تشتغل الآن موسيقى الاسترخاء.":"");
-  var T=tracks(),p=$("spick");
-  if(T.length){p.innerHTML='<div class="stat" style="margin-top:10px"><span>🎧 اختر موسيقى أخرى</span></div><div class="spk">'+T.map(function(t){return '<button type="button" class="chip" data-t="'+t.id+'">'+String(t.name).replace(/[&<>"]/g,"")+'</button>'}).join("")+'<button type="button" class="chip" data-t="all">🔀 عشوائي</button></div>';p.hidden=false}
-  weekTxt();paint();if(window.GSH)GSH.finish()}
- $("sgo").onclick=function(){if(st.s==="idle")start();else if(st.s==="run")pause();else resume()};
- $("sbp").onclick=$("sgo").onclick;
- $("sfin").onclick=function(){finish(false)};$("sbf").onclick=function(){finish(false)};
- $("spick").addEventListener("click",function(e){var b=e.target.closest("[data-t]");if(!b)return;unlock();var v=b.dataset.t;if(v==="all")GM.playAll();else GM.playId(+v)});
- $("smus").onchange=function(){set.mus=this.value;ssv()};
- $("sfm").onchange=function(){set.fin=this.value;ssv()};
- $("sdur").onchange=function(){var d=parseInt(this.value,10);set.dur=isNaN(d)||d<0?0:d;this.value=set.dur;ssv()};
- $("sauto").checked=set.auto;$("sdur").value=set.dur;
- $("sauto").onchange=function(){set.auto=this.checked;ssv()};
- document.addEventListener("change",function(e){var t=e.target;if(set.auto&&st.s==="idle"&&t&&t.type==="checkbox"&&t.checked&&t.closest&&t.closest(".ex"))start()});
- if(window.GM)GM.cb=fill;
- /* استعادة جلسة جارية بعد إعادة فتح الصفحة */
- try{var r=JSON.parse(localStorage.getItem(SK)||"null");
-  if(r&&(r.s==="run"||r.s==="pause")){st=r;var e0=el();if(st.dur>0&&e0>=st.dur){st={s:"idle",t0:0,acc:0,dur:0};sst()}else if(st.s==="run"){iv=setInterval(tick,500)}}}catch(e){}
- fill();weekTxt();paint();
-})();
-(function(){
- var $=function(i){return document.getElementById(i)},K="gym-sess-vid",cfg={sel:"none",auto:true,mute:true},vids=[],url=null;
- try{var c=JSON.parse(localStorage.getItem(K)||"null");if(c)cfg={sel:c.sel||"none",auto:c.auto!==false,mute:c.mute!==false}}catch(e){}
- function sv(){try{localStorage.setItem(K,JSON.stringify(cfg))}catch(e){}}
- function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
- function db(){return new Promise(function(res,rej){var r=indexedDB.open("gym-media",1);r.onupgradeneeded=function(){r.result.createObjectStore("vids",{keyPath:"id",autoIncrement:true})};r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}})}
- function op(mode,fn){return db().then(function(d){return new Promise(function(res,rej){var q=fn(d.transaction("vids",mode).objectStore("vids"));q.onsuccess=function(){res(q.result)};q.onerror=function(){rej(q.error)}})})}
- function fillSel(){
-  var seen=[],o='<option value="none">بدون فيديو</option><optgroup label="شروحات التمارين">';
-  Object.keys(VIDS).forEach(function(k){var v=VIDS[k];if(seen.indexOf(v)>-1)return;seen.push(v);o+='<option value="k:'+esc(k)+'">'+esc(k)+' · '+esc(v.t)+'</option>'});
-  o+='</optgroup>';
-  if(vids.length)o+='<optgroup label="فيديوهاتي">'+vids.map(function(v){return '<option value="u:'+v.id+'">📁 '+esc(v.name)+'</option>'}).join("")+'</optgroup>';
-  var s=$("svsel");s.innerHTML=o;s.value=cfg.sel;if(s.value!==cfg.sel){s.value="none";cfg.sel="none"}}
- function srcOf(){
-  if(cfg.sel.indexOf("k:")===0){var v=VIDS[cfg.sel.slice(2)];if(!v)return null;var g=getQ(),i=g==="auto"?autoQ():+g;return (v.q[i]||v.q[0])[1]}
-  if(cfg.sel.indexOf("u:")===0){var id=+cfg.sel.slice(2),o=vids.filter(function(x){return x.id===id})[0];return o?URL.createObjectURL(o.blob):null}
-  return null}
- function apply(play){
-  var w=$("svw"),v=$("svd");
-  if(url&&url.indexOf("blob:")===0)URL.revokeObjectURL(url);url=null;
-  if(cfg.sel==="none"){v.pause();v.removeAttribute("src");w.hidden=true;return}
-  url=srcOf();if(!url){w.hidden=true;return}
-  v.src=url;v.muted=cfg.mute;$("svmute").textContent=cfg.mute?"🔇":"🔊";w.hidden=false;
-  if(play){var p=v.play();if(p&&p.catch)p.catch(function(){})}}
- function loadV(){return op("readonly",function(s){return s.getAll()}).then(function(r){vids=r}).catch(function(){vids=[]}).then(function(){fillSel();apply(false)})}
- window.GSH={
-  start:function(){if(cfg.sel!=="none"){apply(cfg.auto)}},
-  pause:function(){$("svd").pause()},
-  resume:function(){if(cfg.sel!=="none"&&cfg.auto){var p=$("svd").play();if(p&&p.catch)p.catch(function(){})}},
-  finish:function(){$("svd").pause()}};
- $("svsel").onchange=function(){cfg.sel=this.value;sv();apply(false)};
- $("svauto").checked=cfg.auto;$("svauto").onchange=function(){cfg.auto=this.checked;sv()};
- $("svmute").onclick=function(){cfg.mute=!cfg.mute;sv();$("svd").muted=cfg.mute;this.textContent=cfg.mute?"🔇":"🔊"};
- $("svfs").onclick=function(){var v=$("svd");if(v.requestFullscreen)v.requestFullscreen();else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen()};
- $("svfile").onchange=function(){
-  var f=this.files&&this.files[0];this.value="";if(!f)return;
-  op("readwrite",function(s){return s.add({name:f.name.replace(/\.[^.]+$/,""),blob:f})}).then(function(id){cfg.sel="u:"+id;sv();return loadV()})
-  .catch(function(){$("sinfo").textContent="تعذّر حفظ الفيديو. قد تكون مساحة الهاتف ممتلئة أو أنك في وضع التصفح الخاص."})};
- fillSel();loadV();
-})();
-(function(){
  var $=function(i){return document.getElementById(i)},ctx=null,key="",run=false,t0=0,acc=0,laps=[],iv=null;
  function fmt(s){s=Math.max(0,Math.round(s));var h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60,p=function(n){return (n<10?"0":"")+n};return h?h+":"+p(m)+":"+p(r):m+":"+p(r)}
  function el(){return (acc+(run?Date.now()-t0:0))/1000}
@@ -1072,7 +904,7 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
 })();
 (function(){
  var $=function(i){return document.getElementById(i)},FK="gym-food",PK="gym-food-prof",MEALS=["فطور","غداء","عشاء","سناك"],DS=["سبت","أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة"];
- var data={},prof={sex:"m",age:"",h:"",w:"",act:"1.55",goal:"bulk",pref:""},sm=null,ctl=null,lastPlan=null;
+ var data={},prof={sex:"m",age:"",h:"",w:"",act:"1.55",goal:"bulk",pref:"",bt:""},sm=null,ctl=null,lastPlan=null;
  try{data=JSON.parse(localStorage.getItem(FK)||"{}")||{}}catch(e){data={}}
  try{var p0=JSON.parse(localStorage.getItem(PK)||"null");if(p0)prof=Object.assign(prof,p0)}catch(e){}
  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -1083,11 +915,16 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
   var keys=Object.keys(data);if(keys.length>70){keys.sort(function(a,b){return new Date(a)-new Date(b)}).slice(0,keys.length-60).forEach(function(k){delete data[k]})}
   try{localStorage.setItem(FK,JSON.stringify(data))}catch(e){}}
  function svp(){try{localStorage.setItem(PK,JSON.stringify(prof))}catch(e){}}
+ var BT={ecto:{m:1.08,f:.22,p:2,n:"نحيف (إكتومورف)"},meso:{m:1,f:.25,p:2,n:"رياضي متوازن (ميزومورف)"},endo:{m:.95,f:.30,p:2.2,n:"ممتلئ (إندومورف)"}};
+ var TIPS={
+  ecto:["ارفع سعراتك وكُل 5 إلى 6 وجبات ولا تفوّت أي وجبة.","زِد الكربوهيدرات (أرز، شوفان، بطاطس، تمر، خبز كامل).","ركّز على تمارين مركبة ثقيلة (سكوات، ديدلفت، ضغط)، وقلّل الكارديو إلى جلستين خفيفتين أسبوعيًا.","أعطِ كل عضلة 48 ساعة راحة، ونم 8 ساعات."],
+  meso:["بنيتك متوازنة: وزّع ماكروزك بشكل متوازن ولا تبالغ في تقليل أي منها.","نوّع بين تمارين التضخيم والتحمل حسب هدفك.","راقب وزنك كل أسبوعين وعدّل 100 إلى 200 سعرة حسب تقدمك."],
+  endo:["انتبه للسعرات، وقلّل السكر والكربوهيدرات المكررة (خبز أبيض، حلويات، مشروبات سكرية).","ارفع البروتين (نحو 2.2 غ لكل كغ) وأكثر من الخضار والألياف.","أضف 3 إلى 4 جلسات كارديو متوسط أو HIIT أسبوعيًا بجانب الأوزان.","كُل الكربوهيدرات قرب وقت التمرين، وتجنب الأكل الليلي."]};
  function targets(){
   var w=num(prof.w,400),h=num(prof.h,260),a=num(prof.age,120);if(!w||!h||!a)return null;
-  var bmr=10*w+6.25*h-5*a+(prof.sex==="f"?-161:5),tdee=bmr*parseFloat(prof.act||1.55);
+  var B=BT[prof.bt]||BT.meso,bmr=10*w+6.25*h-5*a+(prof.sex==="f"?-161:5),tdee=bmr*parseFloat(prof.act||1.55)*B.m;
   var kcal=Math.round(tdee+(prof.goal==="bulk"?300:prof.goal==="cut"?-400:0));if(kcal<1200)kcal=1200;
-  var p=Math.round(w*(prof.goal==="cut"?2.2:2)),f=Math.round(kcal*.25/9),c=Math.max(0,Math.round((kcal-p*4-f*9)/4));
+  var p=Math.round(w*(prof.goal==="cut"?2.2:B.p)),f=Math.round(kcal*B.f/9),c=Math.max(0,Math.round((kcal-p*4-f*9)/4));
   return {kcal:kcal,p:p,c:c,f:f,cups:Math.ceil(w*35/250)}}
  function tot(){var t={k:0,p:0,c:0,f:0};day().items.forEach(function(i){t.k+=i.k;t.p+=i.p;t.c+=i.c;t.f+=i.f});return t}
  function r1(x){return Math.round(x*10)/10}
@@ -1097,6 +934,7 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
   $("ntg").innerHTML=T?'<div><b>'+T.kcal+'</b><span>سعرة يوميًا</span></div><div><b>'+T.p+'</b><span>غ بروتين</span></div><div><b>'+T.c+'</b><span>غ كربوهيدرات</span></div><div><b>'+T.f+'</b><span>غ دهون</span></div>':'<p class="sub" style="grid-column:1/-1;margin:0">افتح «بياناتي وأهدافي» وأدخل عمرك وطولك ووزنك ليحسب لك التطبيق أهدافك اليومية.</p>';
   var B=[["السعرات",t.k,T&&T.kcal,"#f59e0b","سعرة"],["البروتين",t.p,T&&T.p,"#ef4444","غ"],["الكربوهيدرات",t.c,T&&T.c,"#3b82f6","غ"],["الدهون",t.f,T&&T.f,"#8b5cf6","غ"]];
   $("nbars").innerHTML=B.map(function(b){var pc=b[2]?Math.min(100,b[1]/b[2]*100):0;return '<div class="nbr"><div class="l"><b>'+b[0]+'</b><span>'+Math.round(b[1])+(b[2]?' / '+b[2]:'')+' '+b[4]+'</span></div><div class="b"><i class="'+(b[2]&&b[1]>b[2]*1.1?'o':'')+'" style="width:'+pc+'%;--c:'+b[3]+'"></i></div></div>'}).join("");
+  var bt=BT[prof.bt];$("nbtip").innerHTML=bt?'<div class="card"><h4>🧬 نصائح لنوع جسمك: '+bt.n+'</h4><ul>'+TIPS[prof.bt].map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul><div class="sm">تعديلات تقريبية: كثيرون خليط من الأنواع، فاعتمد على تقدمك الفعلي.</div></div>':"";
   var tc=T?T.cups:8;$("nwv").textContent=("🥤".repeat(Math.min(d.water,20))||"—")+"  "+d.water+" / "+tc+" كأس";
   var h="";MEALS.forEach(function(m){var L=d.items.filter(function(i){return i.m===m});if(!L.length)return;
    h+='<h4>'+m+'</h4><ul>'+L.map(function(i){return '<li><div class="t"><b>'+esc(i.n)+(i.ai?' 🧠':'')+'</b><small>'+(i.q?esc(i.q)+' · ':'')+Math.round(i.k)+' سعرة · ب '+r1(i.p)+' · ك '+r1(i.c)+' · د '+r1(i.f)+'</small></div><button type="button" data-x="'+i.id+'" aria-label="حذف">×</button></li>'}).join("")+'</ul>'});
@@ -1107,9 +945,12 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
  function add(o){
   var d=day();d.items.push({id:Date.now()+Math.floor(Math.random()*1000),m:o.m||"غداء",n:String(o.n||"طعام").slice(0,80),q:String(o.q||"").slice(0,60),k:num(o.k,6000),p:num(o.p,500),c:num(o.c,800),f:num(o.f,500),ai:!!o.ai});sv();rd()}
  /* بيانات المستخدم */
- function fillP(){$("nsex").value=prof.sex;$("nage").value=prof.age;$("nh").value=prof.h;$("nw").value=prof.w;$("nact").value=prof.act;$("ngoal").value=prof.goal;$("npref").value=prof.pref}
+ function fillP(){$("nbt").value=prof.bt||"";$("nsex").value=prof.sex;$("nage").value=prof.age;$("nh").value=prof.h;$("nw").value=prof.w;$("nact").value=prof.act;$("ngoal").value=prof.goal;$("npref").value=prof.pref}
+ $("nqz").onclick=function(){
+  var c={ecto:0,meso:0,endo:0};["nq1","nq2","nq3"].forEach(function(i){c[$(i).value]++});
+  var best=Object.keys(c).sort(function(a,b){return c[b]-c[a]})[0];$("nbt").value=best;$("nnote").textContent="نوع جسمك الأقرب: "+BT[best].n+". اضغط «احسب أهدافي» لتطبيقه."};
  $("ncalc").onclick=function(){
-  prof={sex:$("nsex").value,age:$("nage").value.trim(),h:$("nh").value.trim(),w:$("nw").value.trim(),act:$("nact").value,goal:$("ngoal").value,pref:$("npref").value.trim()};svp();
+  prof={bt:$("nbt").value,sex:$("nsex").value,age:$("nage").value.trim(),h:$("nh").value.trim(),w:$("nw").value.trim(),act:$("nact").value,goal:$("ngoal").value,pref:$("npref").value.trim()};svp();
   if(!targets())$("nnote").textContent="أدخل العمر والطول والوزن بأرقام صحيحة.";else{$("nnote").textContent="تم حساب أهدافك. هذه تقديرات عامة، عدّلها حسب تقدمك.";$("npf").open=false}
   rd()};
  $("nadd").onclick=function(){
@@ -1122,7 +963,7 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
  /* الذكاء الاصطناعي */
  function setBusy(b){["nan","nplan","nrev"].forEach(function(i){$(i).disabled=b});$("nph").disabled=b;$("nstop").hidden=!b}
  function errTxt(e){var c=e&&e.code;return c==="not_granted"?"لم تسمح باستخدام Claude لهذه الصفحة.":c==="rate_limited"?"طلبات كثيرة، انتظر قليلًا ثم حاول.":c==="images_unavailable"||c==="image_rejected"?"لا يمكن إرسال هذه الصورة. جرّب صورة أخرى أو اكتب وصف الوجبة.":c==="cancelled"?"":c==="invalid_json"?"لم أستطع قراءة الرد. جرّب وصفًا أوضح.":"تعذّر الاتصال بالذكاء الاصطناعي. حاول مرة أخرى."}
- function profTxt(){var T=targets();return "الجنس: "+(prof.sex==="f"?"أنثى":"ذكر")+"، العمر: "+prof.age+"، الطول: "+prof.h+" سم، الوزن: "+prof.w+" كغ، الهدف: "+(prof.goal==="bulk"?"بناء عضل":prof.goal==="cut"?"تنشيف":"ثبات")+(T?("، الأهداف اليومية: "+T.kcal+" سعرة، "+T.p+" غ بروتين، "+T.c+" غ كربوهيدرات، "+T.f+" غ دهون"):"")+(prof.pref?("، تفضيلات: "+prof.pref):"")}
+ function profTxt(){var T=targets();return "الجنس: "+(prof.sex==="f"?"أنثى":"ذكر")+"، العمر: "+prof.age+"، الطول: "+prof.h+" سم، الوزن: "+prof.w+" كغ، الهدف: "+(prof.goal==="bulk"?"بناء عضل":prof.goal==="cut"?"تنشيف":"ثبات")+(BT[prof.bt]?("، نوع الجسم: "+BT[prof.bt].n):"")+(T?("، الأهداف اليومية: "+T.kcal+" سعرة، "+T.p+" غ بروتين، "+T.c+" غ كربوهيدرات، "+T.f+" غ دهون"):"")+(prof.pref?("، تفضيلات: "+prof.pref):"")}
  function logTxt(){var L=day().items;return L.length?L.map(function(i){return "- "+i.m+": "+i.n+(i.q?" ("+i.q+")":"")+" = "+Math.round(i.k)+" سعرة، بروتين "+r1(i.p)+"، كارب "+r1(i.c)+"، دهون "+r1(i.f)}).join("\n"):"لم يسجّل شيئًا بعد."}
  async function run(fn){
   if(!sm)return;setBusy(true);ctl=new AbortController();$("nout").textContent="⏳ جارٍ التفكير...";$("nnote").textContent="";
