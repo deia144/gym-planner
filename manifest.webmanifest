@@ -1,18 +1,26 @@
 {
   "name": "جدول النادي",
   "short_name": "جدول النادي",
-  "description": "جدول تمارين النادي وحفظ التقدم على الجهاز",
-  "start_url": "./index.html",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#f1f3f0",
   "theme_color": "#0f8f7e",
-  "lang": "ar",
-  "dir": "rtl"
-"icons": [
-  {
-    "src": "icon2.png",
-    "sizes": "512x512",
-    "type": "image/png"
-  }
-]
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
