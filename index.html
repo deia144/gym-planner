@@ -264,6 +264,21 @@ select,input[type=time],input[type=text],input[type=number]{border-radius:10px}
 #swm{margin:8px 0 0;font-size:.85rem}
 #swyt{display:inline-block;margin:8px 0 0;color:var(--acc);font-weight:600}
 #swyt[hidden]{display:none}
+
+/* ===== واجهة التمرين: شاشة كاملة (فيديو بالأعلى + عدّاد وقت) ===== */
+dialog#vd{width:100vw;max-width:100vw;height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;margin:0;border:0;border-radius:0;
+ padding:max(12px,env(safe-area-inset-top)) max(14px,calc((100vw - 640px)/2)) max(16px,env(safe-area-inset-bottom));overflow:auto;box-sizing:border-box}
+dialog#vd[open]{display:flex;flex-direction:column}
+dialog#vd video{flex:none;max-height:46vh;max-height:46dvh;object-fit:contain}
+#vph{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;aspect-ratio:16/9;max-height:46dvh;border-radius:8px;background:#0b0f14;color:#cbd5e1;text-align:center;padding:12px}
+#vph[hidden]{display:none}
+#vph span{font-size:2.4rem}
+#vph p{margin:0}
+#vph a{margin-top:6px}
+dialog#vd .swr{margin-top:16px;border-top:0;padding-top:0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+dialog#vd .swt{font-size:clamp(3.4rem,18vw,5.5rem)}
+dialog#vd .swb .chip{min-height:52px;padding-inline:20px;font-size:1.05rem}
+dialog#vd .swl{width:100%;max-height:22vh;overflow:auto}
 .tmb{grid-column:1/-1;font-size:.78rem;color:var(--mute);text-align:right;padding-right:4px}
 @media (max-width:640px){
  .ex{grid-template-areas:"c n n p x" "t s r w w"}
@@ -319,6 +334,41 @@ select,input[type=time],input[type=text],input[type=number]{border-radius:10px}
 
 .nut .qz{grid-column:1/-1;border:1px dashed var(--line);border-radius:12px;padding:10px;display:grid;gap:8px}
 .nut .qz label{font-weight:500}
+
+/* ===== لمسة تصميم متقدمة ===== */
+:root{--r:20px;--acc2:#3b82f6;--sh2:0 1px 2px rgba(15,28,36,.06),0 14px 30px -14px rgba(15,28,36,.28)}
+html{scroll-behavior:smooth}
+body{-webkit-font-smoothing:antialiased}
+button{-webkit-tap-highlight-color:transparent}
+.top,.day{border-radius:var(--r);box-shadow:var(--sh2);border:1px solid color-mix(in srgb,var(--line) 75%,transparent)}
+.top{padding:18px;animation:rise .5s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}}
+.stat{font-size:1.02rem;margin-bottom:4px;align-items:center}
+.stat>span:first-child{display:flex;align-items:center;gap:8px;font-weight:800}
+.stat>span:first-child::before{content:"";width:4px;height:1.15em;border-radius:3px;background:linear-gradient(var(--acc),var(--acc2))}
+.bar{height:12px;border-radius:999px;box-shadow:inset 0 1px 3px rgba(0,0,0,.14)}
+.bar i{border-radius:999px;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.day{position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+.day:hover{transform:translateY(-2px)}
+.day.today{border:1px solid var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 22%,transparent),var(--sh2)}
+.day.today::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.day.rest{background:repeating-linear-gradient(135deg,var(--rest) 0 10px,color-mix(in srgb,var(--rest) 78%,var(--panel)) 10px 20px)}
+.badge{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 4px 10px -3px var(--acc)}
+.ex{border-radius:12px;transition:background .2s}
+.ex.done{background:color-mix(in srgb,var(--acc) 9%,transparent)}
+.ex.done input.n{text-decoration:line-through;opacity:.6}
+select,input[type=time],input[type=text]{border-radius:10px;transition:border-color .15s,box-shadow .15s}
+select:focus,input[type=time]:focus,input[type=text]:focus{border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent);outline:0}
+.ex a.v{border-radius:10px;background:color-mix(in srgb,var(--acc) 15%,transparent);transition:transform .15s,background .15s}
+.ex a.v:hover{background:color-mix(in srgb,var(--acc) 28%,transparent)}
+.ex a.v:active,.chip:active{transform:scale(.94)}
+.chip{transition:transform .15s,border-color .15s,background .15s}
+dialog::backdrop{backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+dialog#vd{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 12%,var(--panel)),var(--panel) 45%)}
+dialog#vd video{border-radius:18px;box-shadow:var(--sh2)}
+dialog#vd .dh b{font-size:1.2rem;font-weight:800}
+dialog#vd .swb .chip.pri{box-shadow:0 10px 22px -8px var(--acc);padding-inline:28px}
+@media (prefers-reduced-motion:reduce){.top{animation:none}.day:hover{transform:none}html{scroll-behavior:auto}}
 </style>
 
 <link rel="manifest" href="./manifest.webmanifest">
@@ -448,7 +498,7 @@ select,input[type=time],input[type=text],input[type=number]{border-radius:10px}
   <div class="stat"><span>مكتبة الفيديوهات</span><span id="vcnt"></span></div>
   <div class="tp" id="vlib"></div>
 </section>
-<dialog id="vd" aria-label="فيديو شرح التمرين"><div class="dh"><b id="vt"></b><button class="dc" id="vc" type="button">إغلاق</button></div><div class="qr"><label for="vq">الجودة</label><select id="vq"></select></div><video id="vv" controls playsinline loop></video><div class="swr" id="swr"><a id="swyt" target="_blank" rel="noopener" hidden>🔎 ابحث عن شرح هذا التمرين في يوتيوب</a><div class="swt" id="swt" role="timer" aria-label="وقت التمرين">0:00</div><div class="swb"><button type="button" class="chip pri" id="swgo">▶ ابدأ</button><button type="button" class="chip" id="swlap">⚑ جولة</button><button type="button" class="chip" id="swrs">↺ صفّر</button><button type="button" class="chip" id="swsv">💾 احفظ للتمرين</button></div><div class="swl" id="swl"></div><p class="sub" id="swm"></p></div></dialog>
+<dialog id="vd" aria-label="فيديو شرح التمرين"><div class="dh"><b id="vt"></b><button class="dc" id="vc" type="button">إغلاق</button></div><div class="qr"><label for="vq">الجودة</label><select id="vq"></select></div><video id="vv" controls playsinline loop></video><div id="vph" hidden><span>🎬</span><p>لا يوجد فيديو محفوظ لهذا التمرين</p><a id="swyt" target="_blank" rel="noopener" hidden>🔎 ابحث عن شرح هذا التمرين في يوتيوب</a></div><div class="swr" id="swr"><div class="swt" id="swt" role="timer" aria-label="وقت التمرين">0:00</div><div class="swb"><button type="button" class="chip pri" id="swgo">▶ ابدأ</button><button type="button" class="chip" id="swlap">⚑ جولة</button><button type="button" class="chip" id="swrs">↺ صفّر</button><button type="button" class="chip" id="swsv">💾 احفظ للتمرين</button></div><div class="swl" id="swl"></div><p class="sub" id="swm"></p></div></dialog>
 <datalist id="exl"></datalist>
 <section class="days" id="days"></section>
 </main>
@@ -800,8 +850,10 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
   try{navigator.mediaSession.metadata=new MediaMetadata({title:tr[cur].name,artist:"جدولي في النادي"})}catch(e){}}
  function play(i){
   if(i<0||i>=tr.length)return;cur=i;
-  if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(tr[i].blob);au.src=url;
-  var p=au.play();if(p&&p.catch)p.catch(function(){});
+  if(url)URL.revokeObjectURL(url);
+  var bl=tr[i].blob;if(tr[i].mime&&bl.type!==tr[i].mime)bl=new Blob([bl],{type:tr[i].mime});
+  url=URL.createObjectURL(bl);au.src=url;$("mnote").textContent="";
+  var p=au.play();if(p&&p.catch)p.catch(function(e){if(e&&e.name==="NotAllowedError")$("mnote").textContent="اضغط زر ▶ مرة أخرى لبدء التشغيل."});
   meta();ui()}
  function next(d){
   if(!tr.length)return;
@@ -813,7 +865,7 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
   if(au.paused){var p=au.play();if(p&&p.catch)p.catch(function(){})}else au.pause()}
  au.addEventListener("play",ui);au.addEventListener("pause",ui);
  au.addEventListener("ended",function(){if(rep===2)play(cur);else if(rep===1||shuf||cur<tr.length-1)next(1);else ui()});
- au.addEventListener("error",function(){$("mnote").textContent="تعذّر تشغيل هذا الملف. جرّب ملفًا بصيغة أخرى مثل MP3."});
+ au.addEventListener("error",function(){$("mnote").textContent="تعذّر تشغيل هذا الملف. إن كانت الأغنية مضافة سابقًا فاحذفها وأضفها من جديد، أو جرّب صيغة MP3 أو M4A."});
  au.addEventListener("loadedmetadata",function(){$("mdu").textContent=fm(au.duration)});
  au.addEventListener("timeupdate",function(){$("mcu").textContent=fm(au.currentTime);if(!seeking&&au.duration)$("msk").value=Math.round(au.currentTime/au.duration*1000)});
  var sk=$("msk");
@@ -821,6 +873,7 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
  sk.addEventListener("change",function(){if(au.duration)au.currentTime=sk.value/1000*au.duration;seeking=false});
  var v0=80;try{var sv=localStorage.getItem("gym-vol");if(sv!==null)v0=+sv}catch(e){}
  $("mvol").value=v0;au.volume=v0/100;
+ (function(){var t=au.volume;au.volume=.5;var ok=Math.abs(au.volume-.5)<.01;au.volume=t;if(!ok)$("mvol").parentNode.style.display="none"})();
  $("mvol").addEventListener("input",function(){au.volume=this.value/100;try{localStorage.setItem("gym-vol",this.value)}catch(e){}});
  $("mpp").onclick=toggle;$("mfab").onclick=toggle;
  $("mnext").onclick=function(){next(1)};$("mprev").onclick=function(){if(au.currentTime>3)au.currentTime=0;else next(-1)};
@@ -833,10 +886,14 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
     if(idx===cur){au.pause();au.removeAttribute("src");cur=-1;$("msk").value=0;$("mcu").textContent="0:00";$("mdu").textContent="0:00"}else if(idx>=0&&idx<cur)cur--;ui()});return}
   var b=e.target.closest("[data-i]");if(b)play(+b.dataset.i)});
  $("mfile").onchange=function(){
-  var fs=Array.prototype.slice.call(this.files||[]);this.value="";if(!fs.length)return;
+  var inp=this,fs=Array.prototype.slice.call(inp.files||[]);if(!fs.length)return;
+  var MT={mp3:"audio/mpeg",m4a:"audio/mp4",mp4:"audio/mp4",aac:"audio/aac",wav:"audio/wav",flac:"audio/flac",ogg:"audio/ogg",oga:"audio/ogg",opus:"audio/ogg",caf:"audio/x-caf",aif:"audio/aiff",aiff:"audio/aiff"};
+  function mime(f){var m=/\.([^.]+)$/.exec(f.name||"");var e=m?m[1].toLowerCase():"";return MT[e]||f.type||"audio/mpeg"}
+  function rd(f){if(f.arrayBuffer)return f.arrayBuffer();return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result)};r.onerror=function(){rej(r.error)};r.readAsArrayBuffer(f)})}
   var chain=Promise.resolve();
-  fs.forEach(function(f){chain=chain.then(function(){return op("readwrite",function(s){return s.add({name:f.name.replace(/\.[^.]+$/,""),blob:f,size:f.size})})})});
-  chain.then(load).catch(function(){$("mnote").textContent="تعذّر حفظ الأغاني. قد تكون مساحة الهاتف ممتلئة أو أنك في وضع التصفح الخاص."})};
+  fs.forEach(function(f){chain=chain.then(function(){return rd(f)}).then(function(buf){var m=mime(f);
+   return op("readwrite",function(s){return s.add({name:f.name.replace(/\.[^.]+$/,""),blob:new Blob([buf],{type:m}),mime:m,size:f.size})})})});
+  chain.then(function(){inp.value=""}).then(load).catch(function(){inp.value="";$("mnote").textContent="تعذّر حفظ الأغاني. قد تكون مساحة الهاتف ممتلئة أو أنك في وضع التصفح الخاص."})};
  $("mlA").onclick=function(){
   var u=$("mlU").value.trim(),t=$("mlT").value.trim();if(!u)return;
   if(!/^https?:\/\//i.test(u))u="https://"+u;
@@ -887,11 +944,11 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
   var tm=S.days[c.i]&&S.days[c.i].ex[c.j]&&S.days[c.i].ex[c.j].tm;
   if(tm&&acc===0)$("swm").textContent="آخر وقت مسجّل لهذا التمرين: "+fmt(tm);
   paint();
-  if(has){m.style.display="";if(qr)qr.style.display="";$("swyt").hidden=true;return}
+  if(has){m.style.display="";if(qr)qr.style.display="";$("swyt").hidden=true;$("vph").hidden=true;return}
   e.preventDefault();
   $("vt").textContent=c.name||"التمرين";
   m.pause();m.removeAttribute("src");m.style.display="none";if(qr)qr.style.display="none";
-  $("swyt").href=yt(c.name);$("swyt").hidden=false;
+  $("swyt").href=yt(c.name);$("swyt").hidden=false;$("vph").hidden=false;
   if(d.showModal)d.showModal();else d.setAttribute("open","")},true);
  /* عرض الوقت المسجّل بجانب التمرين */
  function badges(){

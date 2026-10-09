@@ -1,4 +1,4 @@
-const CACHE = "gym-planner-v13";
+const CACHE = "gym-planner-v16";
 const APP = ["./", "./index.html", "./manifest.webmanifest"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(c => c.addAll(APP)).then(() => self.skipWaiting()));
