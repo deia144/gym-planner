@@ -1,4 +1,4 @@
-const CACHE = "gym-planner-v39";
+const CACHE = "gym-planner-v40";
 const VCACHE = "gym-videos"; // ثابت: لا يُحذف عند تحديث نسخة التطبيق
 // ملفات التطبيق الأساسية. التخزين المسبق متسامح: غياب أي ملف لا يُفشل التثبيت
 const APP = ["./", "./index.html", "./manifest.webmanifest", "./icon2.png", "./icon-192.png", "./icon-512.png"];

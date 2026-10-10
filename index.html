@@ -792,7 +792,7 @@ $("rmb").onclick=function(){var ics=buildICS(),m=$("rmm");if(!ics){m.textContent
  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));a.download="gym-plan.ics";document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},500);
  m.textContent="تم تنزيل ملف gym-plan.ics. افتحه ليُضاف إلى التقويم."};
 $("rnb").onclick=function(){var m=$("rmm");
- if(!("Notification" in window)){m.textContent="الإشعارات غير متاحة هنا. على الآيفون أضف التطبيق إلى الشاشة الرئيسية أولاً (يتطلب iOS 16.4 أو أحدث) ثم افتحه من أيقونته.";return}
+ if(!("Notification" in window)){m.textContent="الإشعارات غير متاحة على هذا الجهاز (تحتاج iOS 16.4 أو أحدث مع إضافة التطبيق إلى الشاشة الرئيسية). لا مشكلة: في iOS 15 وما بعده يصدر مؤقت الراحة صوت تنبيه حتى لو قُفلت الشاشة، ويظهر عدّاده على شاشة القفل.";return}
  Notification.requestPermission().then(function(p){if(p==="granted"){try{localStorage.setItem("gym-notify","1")}catch(e){}
   m.textContent="تم تفعيل إشعارات المؤقت. قد لا تصل إذا أُغلق التطبيق أو قُفلت الشاشة لأن الآيفون يوقف التطبيقات في الخلفية. للتذكير الموثوق استخدم تذكيرات التقويم."}
   else m.textContent="لم يُمنح إذن الإشعارات. يمكنك السماح به من إعدادات الآيفون ثم المحاولة مرة أخرى."})};
@@ -945,14 +945,14 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
  var ctx=null,end=0,iv=null,tb=document.getElementById("tb"),pn=document.getElementById("tp2"),tt=document.getElementById("tt");
  function beep(){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();[0,.25,.5].forEach(function(s){var o=ctx.createOscillator(),g=ctx.createGain(),a=ctx.currentTime+s;o.frequency.value=880;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(.0001,a);g.gain.exponentialRampToValueAtTime(.3,a+.02);g.gain.exponentialRampToValueAtTime(.0001,a+.2);o.start(a);o.stop(a+.22)})}catch(e){}}
  function fm(s){var m=Math.floor(s/60),r=s%60;return (m<10?"0":"")+m+":"+(r<10?"0":"")+r}
- function stop(msg){clearInterval(iv);iv=null;tb.classList.remove("run");tb.textContent="⏱";tt.textContent=msg||"00:00";rbHide()}
- function tick(){var l=Math.max(0,Math.round((end-Date.now())/1000));tt.textContent=fm(l);tb.textContent=l>0?l:"⏱";rbUpd(l);
-  if(l<=0){stop("انتهت الراحة!");rbDone();notify("انتهت الراحة",nxt?"هيا إلى: "+nxt:"");beep();if(navigator.vibrate)navigator.vibrate([200,100,200])}}
+ function stop(msg){clearInterval(iv);iv=null;tb.classList.remove("run");tb.textContent="⏱";tt.textContent=msg||"00:00";rbHide();if(window.GRest)GRest.stop(!!msg)}
+ function tick(){var l=Math.max(0,Math.round((end-Date.now())/1000));tt.textContent=fm(l);tb.textContent=l>0?l:"⏱";rbUpd(l);if(window.GRest&&l>0)GRest.tick(l);
+  if(l<=0){stop("انتهت الراحة!");rbDone();notify("انتهت الراحة",nxt?"هيا إلى: "+nxt:"");if(!(window.GRest&&GRest.done()))beep();if(navigator.vibrate)navigator.vibrate([200,100,200])}}
  if(tb){tb.onclick=function(){pn.hidden=!pn.hidden};
   pn.addEventListener("click",function(e){var b=e.target.closest("button[data-s]");if(!b)return;var s=+b.dataset.s;
    try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.resume)ctx.resume()}catch(x){}
    if(!s){stop();return}
-   nxt="";end=Date.now()+s*1000;clearInterval(iv);tb.classList.add("run");tick();iv=setInterval(tick,250)})}
+   nxt="";end=Date.now()+s*1000;clearInterval(iv);tb.classList.add("run");if(window.GRest)GRest.start(s);tick();iv=setInterval(tick,250)})}
   /* راحة تلقائية بين التمارين */
   var nxt="",AK="gym-rest-auto",auto=true,dur=90,hT=0,rb=document.createElement("div");
   try{var a0=JSON.parse(localStorage.getItem(AK)||"null");if(a0){auto=a0.on!==false;dur=+a0.s||90}}catch(e){}
@@ -963,7 +963,7 @@ $("tp").innerHTML=TP.map(function(x){return '<a target="_blank" rel="noopener" h
   function rbHide(){clearTimeout(hT);rb.hidden=true}
   function rbDone(){rbShow("✅ انتهت الراحة"+(nxt?" · هيا إلى: "+nxt:""),0);hT=setTimeout(function(){rb.hidden=true},6000)}
   rb.addEventListener("click",function(e){if(e.target.tagName==="BUTTON")stop()});
-  function begin(sec){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.resume)ctx.resume()}catch(x){}end=Date.now()+sec*1000;clearInterval(iv);tb.classList.add("run");tick();iv=setInterval(tick,250)}
+  function begin(sec){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.resume)ctx.resume()}catch(x){}end=Date.now()+sec*1000;clearInterval(iv);tb.classList.add("run");if(window.GRest)GRest.start(sec);tick();iv=setInterval(tick,250)}
   document.addEventListener("change",function(e){var t=e.target;if(!auto||!t||t.type!=="checkbox"||!t.checked||t.dataset.k!=="d")return;
    var d=S.days[t.dataset.i],j=+t.dataset.j;if(!d)return;var o=null,n=d.ex.length,k;
    for(k=1;k<=n&&!o;k++){var c=d.ex[(j+k)%n];if(c&&!c.d&&c.n)o=c}
@@ -1368,6 +1368,60 @@ S=load();draw();
  window.addEventListener("online",net);window.addEventListener("offline",net);
  if(!navigator.onLine)net();else setTimeout(hint,3000);
 })();
+</script>
+<script>
+/* تنبيه مؤقت الراحة على iOS 15 وما فوق: صوت يعمل مع قفل الشاشة + عدّاد على شاشة القفل */
+window.GRest=(function(){
+ var au=null,aURL=null,sURL=null,total=0,lastL=-1,rel=null;
+ function wav(rate,n,gen){
+  var b=new ArrayBuffer(44+n),v=new DataView(b),i;
+  function w(o,t){for(var k=0;k<t.length;k++)v.setUint8(o+k,t.charCodeAt(k))}
+  w(0,"RIFF");v.setUint32(4,36+n,true);w(8,"WAVE");w(12,"fmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);
+  v.setUint32(24,rate,true);v.setUint32(28,rate,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,"data");v.setUint32(40,n,true);
+  for(i=0;i<n;i++)v.setUint8(44+i,gen(i));
+  return URL.createObjectURL(new Blob([b],{type:"audio/wav"}))}
+ function mk(){
+  if(sURL)return;
+  sURL=wav(8000,8000,function(){return 128});
+  var R=22050;
+  aURL=wav(R,Math.round(R*3.32),function(i){var t=i/R,tc=t%1.66;if(tc>=1.26)return 128;var p=tc%.42;if(p>=.28)return 128;
+   var e=Math.min(1,p/.01,(.28-p)/.03);return 128+Math.round(e*Math.sin(2*Math.PI*988*t)*112)})}
+ function fm(s){var m=Math.floor(s/60),r=s%60;return (m<10?"0":"")+m+":"+(r<10?"0":"")+r}
+ function ms(t){try{if(!("mediaSession" in navigator))return;navigator.mediaSession.metadata=new MediaMetadata({title:t,artist:"جدولي في النادي"})}catch(e){}}
+ function pos(p){try{if(navigator.mediaSession&&navigator.mediaSession.setPositionState&&total>0)navigator.mediaSession.setPositionState({duration:total,position:Math.max(0,Math.min(p,total)),playbackRate:1})}catch(e){}}
+ function release(){
+  clearTimeout(rel);rel=null;
+  if(au){try{au.onended=null;au.pause();au.removeAttribute("src");au.load()}catch(e){}}
+  try{if("mediaSession" in navigator){navigator.mediaSession.metadata=null;navigator.mediaSession.playbackState="none"}}catch(e){}
+  lastL=-1}
+ function handlers(){
+  try{if(!("mediaSession" in navigator))return;
+   navigator.mediaSession.setActionHandler("play",function(){if(au&&au.src)au.play()});
+   navigator.mediaSession.setActionHandler("pause",function(){if(au&&au.src)au.play()});
+   navigator.mediaSession.setActionHandler("stop",function(){var b=document.querySelector('#tp2 button[data-s="0"]');if(b)b.click();else release()})}catch(e){}}
+ return {
+  start:function(sec){
+   try{
+    mk();clearTimeout(rel);
+    if(!au){au=new Audio();au.setAttribute("playsinline","");au.preload="auto"}
+    au.onended=null;au.loop=true;au.src=sURL;total=sec;lastL=-1;
+    var p=au.play();if(p&&p.catch)p.catch(function(){});
+    handlers();ms("⏱ راحة "+fm(sec));pos(0);
+    try{navigator.mediaSession.playbackState="playing"}catch(e){}
+   }catch(e){}},
+  tick:function(l){
+   if(!au||l===lastL)return;lastL=l;ms("⏱ باقي "+fm(l));pos(total-l)},
+  done:function(){
+   if(!au||!au.src)return false;
+   try{
+    au.onended=release;au.loop=false;au.src=aURL;
+    var p=au.play();if(p&&p.catch)p.catch(function(){});
+    ms("✅ انتهت الراحة · هيا للتمرين التالي");pos(total);
+    clearTimeout(rel);rel=setTimeout(release,6000);
+    return true
+   }catch(e){return false}},
+  stop:function(ended){if(ended)return;release()}
+ }})();
 </script>
 <script>
 if ("serviceWorker" in navigator) {
