@@ -439,6 +439,20 @@ dialog#fin::backdrop{background:#000}
 .offb.ok{background:#0f766e}
 .offb.hint{background:linear-gradient(135deg,#0f766e,#1d4ed8)}
 .offb button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:6px 12px;min-height:36px;cursor:pointer;background:rgba(255,255,255,.22);color:#fff}
+
+/* ===== الإحماء الصوتي ===== */
+.wu .wuc{display:flex;align-items:center;gap:10px}
+.wu .wuc input{flex:1;min-width:0;accent-color:var(--acc);height:28px}
+.wu .wuc span{font-variant-numeric:tabular-nums;color:var(--mute);font-size:.85rem;min-width:36px;text-align:center}
+.wu .chip.pri{background:linear-gradient(135deg,var(--acc),#3b82f6);color:#fff;border:0;min-height:44px;white-space:nowrap}
+
+.wu .wuv{position:relative;border-radius:14px;overflow:hidden;background:#000;margin-bottom:10px;aspect-ratio:16/9}
+.wu .wuv video{width:100%;height:100%;display:block;object-fit:contain}
+.wu .wuv button{position:absolute;top:8px;left:8px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:1rem;cursor:pointer}
+.wu .wumd{display:flex;gap:8px;margin-bottom:10px}
+.wu .wumd .chip{min-height:44px}
+.wu .wumd .chip[aria-pressed=true]{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.wu .wuv[hidden]{display:none}
 </style>
 
 <link rel="manifest" href="./manifest.webmanifest">
@@ -457,6 +471,15 @@ dialog#fin::backdrop{background:#000}
 </header>
 <section class="wk" id="wk" aria-label="أيام الأسبوع"></section>
 <section class="kp" id="kp" aria-label="إحصائيات"></section>
+<section class="top wu" id="wu" aria-label="الإحماء">
+  <div class="stat"><span>🔥 إحماء قبل التمرين</span><span id="wut"></span></div>
+  <p class="sub" style="margin:4px 0 10px;font-size:.88rem">إحماء للجسم كاملًا. شغّله قبل أول تمرين. اختر «صوت فقط» لتتحرك وشاشتك مقفلة، أو «فيديو» لتتابع الحركات.</p>
+  <div class="wumd" role="group" aria-label="نمط الإحماء"><button type="button" class="chip" id="wuv1" aria-pressed="true">🎞️ فيديو</button><button type="button" class="chip" id="wua1" aria-pressed="false">🎧 صوت فقط</button></div>
+  <div class="wuv" id="wuvw"><video id="wua" playsinline preload="metadata" src="videos/warmup.mp4#t=0.1"></video><button type="button" id="wufs" aria-label="ملء الشاشة">⛶</button></div>
+  <audio id="wub" preload="none" src="audio/warmup.mp3"></audio>
+  <div class="wuc"><button type="button" class="chip pri" id="wup">▶ ابدأ الإحماء</button><input type="range" id="wus" min="0" max="1000" value="0" dir="ltr" aria-label="موضع التشغيل"><span id="wuc" dir="ltr">0:00</span></div>
+  <p class="sub" id="wum" style="margin:8px 0 0;font-size:.85rem" role="status"></p>
+</section>
 
 <section class="top bd" id="bd" aria-label="تطور الجسم">
   <div class="stat"><span>📸 تطور الجسم</span><span id="bdc"></span></div>
@@ -577,7 +600,7 @@ dialog#fin::backdrop{background:#000}
 var DN=["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
 var TY=["صدر","ظهر","أرجل","أكتاف","ذراعين","بطن وكور","دفع","سحب","علوي","سفلي","جسم كامل","كارديو","HIIT","مرونة وإطالة","راحة"];
 var LIB={
-"صدر":[["ضغط بالبار","4","8"],["ضغط مائل بالدمبل","3","10"],["فلاي","3","12"],["متوازي","3","10"],["كروس أوفر بالكابل","3","12"],["ضغط بالدمبل","3","10"],["ضغط بالآلة","3","12"],["ضغط أرضي (بوش أب)","3","15"],["باترفلاي","3","12"]],
+"صدر":[["ضغط بالبار","4","8"],["ضغط مائل بالدمبل","3","10"],["فلاي","3","12"],["متوازي","3","10"],["كروس أوفر بالكابل","3","12"],["ضغط بالدمبل","3","10"],["ضغط بالآلة","3","12"],["ضغط أرضي (بوش أب)","3","15"],["باترفلاي","3","12"],["باترفلاي (شرح ثانٍ)","3","12"]],
 "ظهر":[["سحب علوي","4","10"],["تجديف بالبار","4","8"],["سحب أرضي","3","10"],["ديدلفت رومانيان","3","8"],["عقلة","3","8"],["تجديف بالدمبل","3","10"],["سحب بذراع واحدة","3","12"],["هايبر إكستنشن","3","12"]],
 "أرجل":[["سكوات","4","8"],["ضغط الأرجل","3","12"],["رفرفة خلفية للفخذ","3","12"],["سمانة","4","15"],["لانجز","3","10"],["رفرفة أمامية للفخذ","3","12"],["هاك سكوات","3","10"],["ديدلفت","3","6"]],
 "أكتاف":[["ضغط أكتاف","4","8"],["رفرفة جانبية","4","12"],["رفرفة خلفية","3","15"],["رفع الكتفين","3","12"],["ضغط أرنولد","3","10"],["رفرفة أمامية","3","12"],["فيس بول","3","15"]],
@@ -625,12 +648,18 @@ VIDS["أفضل تمرين للباي"]={t:"إيه أفضل تمرين باي؟",
 VIDS["ديبس"]={t:"الديبس على الكرسي (بنش ديب)",q:[["360p","videos/benchdip-360.mp4"],["240p · توفير البيانات","videos/benchdip-240.mp4"]]};
 VIDS["مطرقة"]={t:"المطرقة بالدمبل",q:[["360p","videos/hammer-360.mp4"],["240p · توفير البيانات","videos/hammer-240.mp4"]]};
 VIDS["ترايسبس بالحبل"]={t:"الترايسبس بالحبل على الكابل",q:[["360p","videos/rope-360.mp4"],["240p · توفير البيانات","videos/rope-240.mp4"]]};
+VIDS["باي بار"]={t:"باي مستوي بالبار: الأداء الصحيح",q:[["360p","videos/curlbar-360.mp4"],["240p · توفير البيانات","videos/curlbar-240.mp4"]]};
+VIDS["دوران روسي"]={t:"الدوران الروسي بالصفيحة",q:[["360p","videos/russiantwist-360.mp4"],["240p · توفير البيانات","videos/russiantwist-240.mp4"]]};
+VIDS["رفع الأرجل"]={t:"رفع الساقين لعضلات البطن",q:[["360p","videos/legraises-360.mp4"],["240p · توفير البيانات","videos/legraises-240.mp4"]]};
+VIDS["كرنش"]={t:"كرنش البطن: الأداء الصحيح",q:[["360p","videos/crunch-360.mp4"],["240p · توفير البيانات","videos/crunch-240.mp4"]]};
+VIDS["كرنش بالكابل"]={t:"كرنش الكابل: تجنّب هذا الخطأ",q:[["360p","videos/cablecrunch-360.mp4"],["240p · توفير البيانات","videos/cablecrunch-240.mp4"]]};
+VIDS["باترفلاي (شرح ثانٍ)"]={t:"تمرين الفراشة (شرح ثانٍ)",q:[["360p","videos/butterfly2-360.mp4"],["240p · توفير البيانات","videos/butterfly2-240.mp4"]]};
 VIDS["بلانك"]={t:"البلانك لعضلات البطن",q:[["360p","videos/plank-360.mp4"],["240p · توفير البيانات","videos/plank-240.mp4"]]};
 VIDS["ضغط بالبار"]={t:"الضغط بالبار (بنش بريس)",q:[["360p","videos/bench-360.mp4"],["240p · توفير البيانات","videos/bench-240.mp4"]]};
 VIDS["ضغط أكتاف"]={t:"ضغط الأكتاف بالدمبل",q:[["360p","videos/shoulder-360.mp4"],["240p · توفير البيانات","videos/shoulder-240.mp4"]]};
 VIDS["سكوات"]={t:"السكوات الحر: شرح مختصر",q:[["360p","videos/squat-360.mp4"],["240p · توفير البيانات","videos/squat-240.mp4"]]};
 /* الفيديوهات المتوفرة فعلاً في مجلد videos */
-(function(){var F={};"arnold-240 barrow-240 bench-240 benchdip-240 bicepsbest-240 butterfly-240 cablefly-240 cablefly-360 calf-240 dips-240 hammer-240 incline-240 lat-pulldown-240 lateral-240 legcurl-240 legpress-240 lunge-240 plank-240 pullup-240 rdl-240 reardelt-360 seatedrow-240 shoulder-240 squat-240".split(" ").forEach(function(n){F["videos/"+n+".mp4"]=1});
+(function(){var F={};"arnold-240 barrow-240 bench-240 benchdip-240 bicepsbest-240 butterfly-240 cablefly-240 cablefly-360 calf-240 dips-240 hammer-240 incline-240 lat-pulldown-240 lateral-240 legcurl-240 legpress-240 lunge-240 plank-240 pullup-240 rdl-240 reardelt-360 seatedrow-240 shoulder-240 squat-240 curlbar-360 curlbar-240 russiantwist-360 russiantwist-240 legraises-360 legraises-240 crunch-360 crunch-240 cablecrunch-360 cablecrunch-240 butterfly2-360 butterfly2-240".split(" ").forEach(function(n){F["videos/"+n+".mp4"]=1});
  Object.keys(VIDS).forEach(function(n){var v=VIDS[n];v.q=v.q.filter(function(x){return F[x[1]]});if(!v.q.length)delete VIDS[n]})})();
 var QK="gym-quality",curV=null,CQ={};
 function autoQ(){return 0;var c=navigator.connection;if(c){if(c.saveData)return 3;var t=c.effectiveType;if(t==="slow-2g"||t==="2g")return 3;if(t==="3g")return 2}return 0}
@@ -807,7 +836,7 @@ $("rtest").onclick=function(){var i=today;if(!S.days[i]||S.days[i].t==="راحة
  lib.parentNode.insertBefore(w,lib);
  var btn=$("ofd"),msg=$("ofm");
  function urls(qk){var set={};Object.keys(VIDS).forEach(function(n){var q=VIDS[n]&&VIDS[n].q;if(!q||!q.length)return;
-  var e=q.filter(function(x){return String(x[0]).indexOf(qk)===0})[0]||q[q.length-1];set[e[1]]=1});set["videos/finish.mp4"]=1;return Object.keys(set)}
+  var e=q.filter(function(x){return String(x[0]).indexOf(qk)===0})[0]||q[q.length-1];set[e[1]]=1});set["videos/finish.mp4"]=1;set["videos/warmup.mp4"]=1;set["audio/warmup.mp3"]=1;return Object.keys(set)}
  function refresh(){return caches.open(VC).then(function(c){return c.keys()}).then(function(ks){CQ={};ks.forEach(function(k){CQ[k.url]=1});
   msg.textContent=ks.length?"المحمَّل على هذا الجهاز: "+ks.length+" فيديو. تعمل بدون إنترنت.":"لم تُحمَّل فيديوهات بعد."})}
  btn.onclick=async function(){
@@ -1422,6 +1451,45 @@ window.GRest=(function(){
    }catch(e){return false}},
   stop:function(ended){if(ended)return;release()}
  }})();
+</script>
+<script>
+(function(){
+ var v=document.getElementById("wua"),au=document.getElementById("wub");if(!v||!au)return;
+ var $=function(i){return document.getElementById(i)},MK="gym-wu-mode",mode="video",seeking=false;
+ try{if(localStorage.getItem(MK)==="audio")mode="audio"}catch(e){}
+ function cur(){return mode==="audio"?au:v}
+ function fm(s){if(!isFinite(s)||s<0)s=0;var m=Math.floor(s/60),r=Math.floor(s%60);return m+":"+(r<10?"0":"")+r}
+ function ms(on){try{if(!("mediaSession" in navigator))return;
+  if(!on){navigator.mediaSession.metadata=null;return}
+  navigator.mediaSession.metadata=new MediaMetadata({title:"إحماء قبل التمرين",artist:"جدولي في النادي"});
+  navigator.mediaSession.setActionHandler("play",function(){cur().play()});navigator.mediaSession.setActionHandler("pause",function(){cur().pause()})}catch(e){}}
+ function ui(){var a=cur();$("wup").textContent=a.paused?(a.currentTime>1&&!a.ended?"▶ تابع الإحماء":"▶ ابدأ الإحماء"):"⏸ إيقاف مؤقت";
+  $("wuv1").setAttribute("aria-pressed",mode==="video");$("wua1").setAttribute("aria-pressed",mode==="audio");$("wuvw").hidden=(mode==="audio")}
+ function dur(){var a=cur();if(a.duration)$("wut").textContent=fm(a.duration)}
+ function wire(el){
+  el.addEventListener("loadedmetadata",function(){if(el===cur())dur()});
+  el.addEventListener("timeupdate",function(){if(el!==cur())return;$("wuc").textContent=fm(el.currentTime);if(!seeking&&el.duration)$("wus").value=Math.round(el.currentTime/el.duration*1000)});
+  el.addEventListener("play",function(){if(el!==cur())return;ui();ms(true);$("wum").textContent="";try{if(window.GM&&GM.pause)GM.pause()}catch(e){}});
+  el.addEventListener("pause",function(){if(el===cur())ui()});
+  el.addEventListener("ended",function(){if(el!==cur())return;ui();$("wus").value=0;$("wuc").textContent="0:00";ms(false);$("wum").textContent="✅ انتهى الإحماء. ابدأ تمارينك الآن! 💪"});
+  el.addEventListener("error",function(){if(el!==cur())return;$("wum").textContent=el===au?"لم أجد صوت الإحماء. ضع الملف في مجلد audio باسم warmup.mp3 على موقعك، أو حمّله بزر «حمّل الفيديوهات للعمل بدون إنترنت» وأنت متصل.":"لم أجد فيديو الإحماء. ضع الملف في مجلد videos باسم warmup.mp4 على موقعك، أو حمّله بزر «حمّل الفيديوهات للعمل بدون إنترنت» وأنت متصل.";ui()})}
+ wire(v);wire(au);
+ function setMode(m){
+  if(m===mode)return;
+  var o=cur(),t=o.currentTime,was=!o.paused;o.pause();mode=m;
+  try{localStorage.setItem(MK,m)}catch(e){}
+  var n=cur();$("wum").textContent="";
+  if(t>1){if(n.readyState>0){try{n.currentTime=t}catch(e){}}else{n.addEventListener("loadedmetadata",function f(){n.removeEventListener("loadedmetadata",f);try{n.currentTime=t}catch(e){}})}}
+  if(was){var p=n.play();if(p&&p.catch)p.catch(function(){})}
+  ui();dur();$("wuc").textContent=fm(t)}
+ $("wuv1").onclick=function(){setMode("video")};$("wua1").onclick=function(){setMode("audio")};
+ $("wufs").onclick=function(){if(v.requestFullscreen)v.requestFullscreen();else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen()};
+ $("wup").onclick=function(){var a=cur();if(a.paused){var p=a.play();if(p&&p.catch)p.catch(function(){})}else a.pause()};
+ var sk=$("wus");
+ sk.addEventListener("input",function(){seeking=true;var a=cur();if(a.duration)$("wuc").textContent=fm(sk.value/1000*a.duration)});
+ sk.addEventListener("change",function(){var a=cur();if(a.duration)a.currentTime=sk.value/1000*a.duration;seeking=false});
+ ui()
+})();
 </script>
 <script>
 if ("serviceWorker" in navigator) {
