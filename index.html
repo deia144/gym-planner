@@ -431,6 +431,14 @@ dialog#fin::backdrop{background:#000}
 .fine span{position:absolute;top:-12%;opacity:.9;animation:finFall linear infinite}
 @keyframes finFall{to{transform:translateY(125dvh) rotate(40deg)}}
 @media (prefers-reduced-motion:reduce){.fine{display:none}.fint.in{animation:none}}
+
+/* ===== حالة الاتصال ===== */
+.offb{position:fixed;z-index:90;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);max-width:calc(100vw - 20px);display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;padding:10px 14px;border-radius:18px;font-weight:700;font-size:.9rem;line-height:1.5;color:#fff;background:#334155;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.offb[hidden]{display:none}
+.offb.off{background:#b45309}
+.offb.ok{background:#0f766e}
+.offb.hint{background:linear-gradient(135deg,#0f766e,#1d4ed8)}
+.offb button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:6px 12px;min-height:36px;cursor:pointer;background:rgba(255,255,255,.22);color:#fff}
 </style>
 
 <link rel="manifest" href="./manifest.webmanifest">
@@ -1335,9 +1343,35 @@ S=load();draw();
 })();
 </script>
 
+<div class="offb" id="offb" role="status" hidden></div>
+<script>
+(function(){
+ var b=document.getElementById("offb");if(!b)return;
+ var tmr=null;
+ function set(h,c){clearTimeout(tmr);b.className="offb"+(c?" "+c:"");b.innerHTML=h;b.hidden=false}
+ function hide(){clearTimeout(tmr);b.hidden=true}
+ function hint(){
+  hide();
+  if(!navigator.onLine||!window.caches)return;
+  try{if(localStorage.getItem("gym-off-hint")==="1")return}catch(e){}
+  caches.open("gym-videos").then(function(c){return c.keys()}).then(function(ks){
+   if(ks.length)return;
+   set('📥 لتعمل فيديوهات الشرح بدون إنترنت، حمّلها مرة واحدة <button type="button" id="offgo">اذهب للتحميل</button><button type="button" id="offx" aria-label="إخفاء">×</button>',"hint")
+  }).catch(function(){})}
+ function net(){
+  if(!navigator.onLine){set("📴 لا يوجد إنترنت. التطبيق يعمل من ذاكرة الهاتف.","off")}
+  else if(b.classList.contains("off")){set("✅ عاد الإنترنت","ok");tmr=setTimeout(hint,2200)}}
+ b.addEventListener("click",function(e){
+  var id=e.target&&e.target.id;
+  if(id==="offgo"){var t=document.getElementById("ofd");if(t)t.scrollIntoView({behavior:"smooth",block:"center"});hide()}
+  else if(id==="offx"){try{localStorage.setItem("gym-off-hint","1")}catch(x){}hide()}});
+ window.addEventListener("online",net);window.addEventListener("offline",net);
+ if(!navigator.onLine)net();else setTimeout(hint,3000);
+})();
+</script>
 <script>
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"}).catch(()=>{}));
 }
 </script>
 </body>

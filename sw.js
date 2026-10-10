@@ -1,9 +1,14 @@
-const CACHE = "gym-planner-v38";
+const CACHE = "gym-planner-v39";
 const VCACHE = "gym-videos"; // ثابت: لا يُحذف عند تحديث نسخة التطبيق
-const APP = ["./", "./index.html", "./manifest.webmanifest"];
+// ملفات التطبيق الأساسية. التخزين المسبق متسامح: غياب أي ملف لا يُفشل التثبيت
+const APP = ["./", "./index.html", "./manifest.webmanifest", "./icon2.png", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE).then(c => c.addAll(APP)).then(() => self.skipWaiting()));
+  event.waitUntil(
+    caches.open(CACHE)
+      .then(c => Promise.all(APP.map(u => c.add(new Request(u, { cache: "reload" })).catch(() => {}))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", event => {
@@ -50,24 +55,48 @@ async function serveVideo(req) {
   }
 }
 
-self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET") return;
-  const url = new URL(event.request.url);
-  if (url.origin === self.location.origin && isVideo(url)) {
-    event.respondWith(serveVideo(event.request));
-    return;
+// الصفحة: الشبكة أولًا (فتصل التحديثات تلقائيًا) ثم النسخة المخزَّنة عند انقطاع الإنترنت أو بطئه
+async function pageFirst(req) {
+  const cache = await caches.open(CACHE);
+  try {
+    const r = await Promise.race([
+      fetch(req),
+      new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 4000))
+    ]);
+    if (r && r.ok && r.status === 200) {
+      cache.put(req, r.clone());
+      cache.put("./index.html", r.clone());
+    }
+    return r;
+  } catch (e) {
+    return (await cache.match(req, { ignoreSearch: true }))
+      || (await cache.match("./index.html"))
+      || (await cache.match("./"))
+      || Response.error();
   }
-  event.respondWith(
-    caches.match(event.request).then(cached =>
-      cached || fetch(event.request).then(response => {
-        if (response.ok && response.status === 200) {
-          const copy = response.clone();
-          caches.open(CACHE).then(c => c.put(event.request, copy));
-        }
-        return response;
-      }).catch(() => caches.match("./index.html"))
-    )
-  );
+}
+
+// بقية الملفات (أيقونات، خطوط، manifest): من التخزين فورًا، وتُحدَّث في الخلفية
+async function assetSWR(req) {
+  const cache = await caches.open(CACHE);
+  const hit = await cache.match(req, { ignoreSearch: true });
+  const net = fetch(req).then(r => {
+    if (r && (r.type === "opaque" || (r.ok && r.status === 200))) cache.put(req, r.clone());
+    return r;
+  }).catch(() => null);
+  return hit || (await net) || Response.error();
+}
+
+self.addEventListener("fetch", event => {
+  const req = event.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  const same = url.origin === self.location.origin;
+  if (same && isVideo(url)) { event.respondWith(serveVideo(req)); return; }
+  if (req.mode === "navigate") { event.respondWith(pageFirst(req)); return; }
+  if (same || url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
+    event.respondWith(assetSWR(req));
+  }
 });
 
 self.addEventListener("notificationclick", event => {
